@@ -1,0 +1,32 @@
+body {
+    margin: 2em 5em;
+}
+
+img {
+    display: block;
+    margin: 0 auto;
+}
+
+#li-opis {
+    grid-column: span 2;
+}
+
+#detalji ul {
+    list-style: none;
+    display: grid;
+    grid-gap: 16px;
+    grid-template-columns: repeat(2, 1fr);
+}
+
+#upit ul {
+    list-style: none;
+    display: grid;
+    grid-gap: 16px;
+    grid-template-columns: 1fr;
+}
+
+#upit li {
+    background-color: white;
+    border: 1px solid black;
+    padding: 10px;
+}
