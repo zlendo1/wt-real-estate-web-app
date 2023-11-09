@@ -1,0 +1,12 @@
+a:hover {
+    color: #ff9900;
+}
+
+ul {
+    list-style: none;
+    text-align: center;
+}
+
+li {
+    display: inline;
+}
