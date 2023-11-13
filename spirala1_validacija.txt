@@ -1,0 +1,63 @@
+meni.html:
+
+    Error: Bad value https:// for attribute href on element a: Invalid host: empty host.
+
+    From line 11, column 9; to line 11, column 27
+
+    >↩    <li><a href="https://">Profil
+
+    Error: Bad value https:// for attribute href on element a: Invalid host: empty host.
+
+    From line 12, column 9; to line 12, column 27
+
+    >↩    <li><a href="https://">Nekret
+
+    Error: Bad value https:// for attribute href on element a: Invalid host: empty host.
+
+    From line 13, column 9; to line 13, column 27
+
+    >↩    <li><a href="https://">Detalj
+
+    Error: Bad value https:// for attribute href on element a: Invalid host: empty host.
+
+    From line 14, column 9; to line 14, column 27
+
+    >↩    <li><a href="https://">Prijav
+
+nekretnine.html:
+
+    Document checking completed. No errors or warnings to show.
+
+detalji.html:
+
+    Document checking completed. No errors or warnings to show.
+
+profil.html:
+
+    Document checking completed. No errors or warnings to show.
+
+app_common.css:
+
+    Congratulations! No Error Found.
+
+meni.css:
+
+    Congratulations! No Error Found.
+
+nekretnine.css:
+
+    Congratulations! No Error Found.
+
+detalji.css:
+
+    Congratulations! No Error Found.
+
+nekretnine.css:
+
+    Congratulations! No Error Found.
+
+Ukupni broj gresaka HTML validacije:    4
+Ukupni broj gresaka CSS validacije:     0
+
+HTML validator koristen:    https://validator.w3.org/
+CSS validator koristen:     https://jigsaw.w3.org/css-validator/
