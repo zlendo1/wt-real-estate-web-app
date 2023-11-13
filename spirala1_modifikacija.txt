@@ -1,0 +1,7 @@
+profil.html:
+    img element prebacen ispred ul/grida
+
+profil.css:
+    dodan media querry za screenove vece od 500px koji prebaciva grid iz block u flex
+
+HTML i CSS validirani ponovo koristeci prethodne validatore i ne prikazuju greske.

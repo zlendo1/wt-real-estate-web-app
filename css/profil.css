@@ -16,3 +16,9 @@ input {
 li {
     align-self: center;
 }
+
+@media screen and (min-width: 501px) {
+    body {
+        display: flex;
+    }
+}
