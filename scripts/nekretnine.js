@@ -6,12 +6,19 @@ function spojiNekretnine(divReferenca, instancaModula, tip_nekretnine) {
     data.forEach(item => {
         const listItem = document.createElement('li')
 
-        listItem.innerHTML = '' +
-            "<img src=\"../res/${item.tip_nekretnine}.png\" alt=\"stan\">\n" +
-            "<p class=\"naziv\">${item.tip_nekretnine}</p>\n" +
-            "<p class=\"kvadratura\">${item.kvadratura} m^3</p>\n" +
-            "<p class=\"cijena\">${item.cijena} KM</p>\n" +
-            "<button type=\"submit\">Detalji</button>"
+        const imageName = {
+            "Stan": "apartments",
+            "Kuća": "house",
+            "Poslovni prostor": "office"
+        }[tip_nekretnine]
+
+        listItem.innerHTML = `
+            <img src="../res/${imageName}.png" alt="stan">
+            <p class="naziv">${item.tip_nekretnine}</p>
+            <p class="kvadratura">${item.kvadratura} m^3</p>
+            <p class="cijena">${item.cijena} KM</p>
+            <button type="submit">Detalji</button>
+            `
 
         ul.appendChild(listItem)
     })
