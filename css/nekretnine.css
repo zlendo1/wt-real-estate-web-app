@@ -1,11 +1,11 @@
-ul {
+.itemList {
     list-style: none;
     display: grid;
     grid-template-columns: repeat(auto-fill, 300px);
     gap: 20px 20px;
 }
 
-li {
+.itemFrame {
     padding: 10px 10px;
 }
 
@@ -21,15 +21,15 @@ button {
     margin: 0 auto;
 }
 
-#stan li {
+#stan .itemFrame {
     background-color: white;
 }
 
-#kuca li {
+#kuca .itemFrame {
     background-color: powderblue;
 }
 
-#pp li {
+#pp .itemFrame {
     background-color: green;
 }
 
