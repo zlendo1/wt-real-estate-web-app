@@ -3,8 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <title>Prijava</title>
+    <link rel="stylesheet" href="../css/app_common.css">
+    <link rel="stylesheet" href="../css/prijava.css">
 </head>
 <body>
-
+    <iframe id="meni" src="./meni.html"></iframe>
+    <div class="container">
+        <div class="login">
+            <h1>Prijava</h1>
+            <form>
+                <div>
+                    <label for="username">Username:</label>
+                    <input id="username" type="text" name="username" placeholder="..." required="required" />
+                </div>
+                <div>
+                    <label for="password">Password:</label>
+                    <input id="password" type="password" name="password" placeholder="..." required="required" />
+                </div>
+                <button type="submit" class="btn btn-primary btn-block btn-large">Prijava</button>
+            </form>
+        </div>
+    </div>
 </body>
 </html>
