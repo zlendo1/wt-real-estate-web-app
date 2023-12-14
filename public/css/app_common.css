@@ -1,3 +1,9 @@
 html {
     background-color: #fdf1d3;
 }
+
+#meni {
+    border: 0;
+    width: 100%;
+    height: fit-content;
+}
