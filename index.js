@@ -32,23 +32,31 @@ app.post('/login', (req, res) => {
             return
         }
 
-        const matchingUser = korisnici.find(
-            korisnik => korisnik.username === bodyUsername && korisnik.password === hash
-        )
+        korisnici
+            .then(korisnici => {
+                const matchingUser = korisnici.find(
+                    korisnik => korisnik.username === bodyUsername && korisnik.password === hash
+                )
 
-        if (!matchingUser) {
-            res.status(401).send(
-                {greska: "Neuspješna prijava"}
-            )
+                if (!matchingUser) {
+                    res.status(401).send(
+                        {greska: "Neuspješna prijava"}
+                    )
 
-            return
-        }
+                    return
+                }
 
-        req.session.user = matchingUser
+                req.session.user = matchingUser
 
-        res.status(200).send(
-            {poruka: "Uspješna prijava"}
-        )
+                res.status(200).send(
+                    {poruka: "Uspješna prijava"}
+                )
+            })
+            .catch(err => {
+                res.status(500).send(
+                    {greska: "Greška u čitanju korisnika"}
+                )
+            })
     })
 })
 
@@ -103,22 +111,30 @@ app.post("/upit", (req, res) => {
     const nekretnina_id = requestBody["nekretnina_id"]
     const tekstUpita = requestBody["tekst_upita"]
 
-    let nekretnina = nekretnine.find(nekretnina => nekretnina.id === nekretnina_id)
+    nekretnine
+        .then(nekretnine => {
+            let nekretnina = nekretnine.find(nekretnina => nekretnina.id === nekretnina_id)
 
-    if (!nekretnina) {
-        res.status(400).send(
-            {greska: `Nekretnina sa id-em ${nekretnina_id} ne postoji`}
-        )
+            if (!nekretnina) {
+                res.status(400).send(
+                    {greska: `Nekretnina sa id-em ${nekretnina_id} ne postoji`}
+                )
 
-        return
-    }
+                return
+            }
 
-    nekretnina.upiti.push({
-        korisnik_id: req.session.user.id,
-        tekst_upita: tekstUpita
-    })
+            nekretnina.upiti.push({
+                korisnik_id: req.session.user.id,
+                tekst_upita: tekstUpita
+            })
 
-    // TODO: Save to file
+            // TODO: Save to file
+        })
+        .catch(err => {
+            res.status(500).send(
+                {greska: "Greška u čitanju nekretnina"}
+            )
+        })
 })
 
 // Start the server
