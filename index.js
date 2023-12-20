@@ -13,8 +13,10 @@ app.use(session({
 
 const bcrypt = require("bcrypt")
 
-let korisnici = import("./data/korisnici.json")
-let nekretnine = import("./data/nekretnine.json")
+const fs = require("fs-extra")
+
+let korisnici = import("./data/korisnici.json", { assert: { type: "json" } })
+let nekretnine = import("./data/nekretnine.json", { assert: { type: "json" } })
 
 // Routes
 app.post('/login', (req, res) => {
@@ -128,7 +130,17 @@ app.post("/upit", (req, res) => {
                 tekst_upita: tekstUpita
             })
 
-            // TODO: Save to file
+            fs.writeJson("./data/nekretnine.json", JSON.stringify(nekretnine))
+                .then(() => {
+                    res.status(200).send(
+                        {poruka: "Upit je uspješno dodan"}
+                    )
+                })
+                .catch(err => {
+                    res.status(500).send(
+                        {greska: "Greška u čitanju nekretnina"}
+                    )
+                })
         })
         .catch(err => {
             res.status(500).send(
