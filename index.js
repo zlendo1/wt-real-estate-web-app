@@ -1,10 +1,10 @@
 const express = require('express')
-const session = require('express-session')
 const app = express()
 const port = 3000 // Port we will listen on
 
 app.use(express.json()) // for parsing application/json
 
+const session = require('express-session')
 app.use(session({
     secret: 'secret',
     resave: false,
@@ -13,15 +13,15 @@ app.use(session({
 
 const bcrypt = require("bcrypt")
 
-const korisnici = import("./data/korisnici.json")
-const nekretnine = import("./data/nekretnine.json")
+let korisnici = import("./data/korisnici.json")
+let nekretnine = import("./data/nekretnine.json")
 
 // Routes
 app.post('/login', (req, res) => {
     const requestBody = req.body
 
-    const bodyUsername = requestBody.username
-    const bodyPassword = requestBody.password
+    const bodyUsername = requestBody["username"]
+    const bodyPassword = requestBody["password"]
 
     const matchingUser = korisnici.find(
         korisnik => korisnik.username === bodyUsername && bcrypt.compareSync(bodyPassword, korisnik.password)
@@ -29,15 +29,17 @@ app.post('/login', (req, res) => {
 
     if (!matchingUser) {
         res.status(401).send(
-            {"greska": "Neuspješna prijava"}
+            {greska: "Neuspješna prijava"}
         )
-    } else {
-        req.session.user = matchingUser
 
-        res.status(200).send(
-            {"poruka": "Uspješna prijava"}
-        )
+        return
     }
+
+    req.session.user = matchingUser
+
+    res.status(200).send(
+        {poruka: "Uspješna prijava"}
+    )
 })
 
 app.post("/logout", (req, res) => {
@@ -45,19 +47,68 @@ app.post("/logout", (req, res) => {
         res.status(401).send(
             {greska: "Neautorizovan pristup"}
         )
-    } else {
-        req.session.destroy(err => {
-            if (err) {
-                res.status(500).send(
-                    {greska: "Greška pri odjavi"}
-                )
-            } else {
-                res.status(200).send(
-                    {poruka: "Uspješno ste se odjavili"}
-                )
-            }
-        })
+
+        return
     }
+
+    req.session.destroy(err => {
+        if (err) {
+            res.status(500).send(
+                {greska: "Greška u uništavanju sesije"}
+            )
+
+            return
+        }
+
+        res.status(200).send(
+            {poruka: "Uspješno ste se odjavili"}
+        )
+    })
+})
+
+app.get("/korisnik", (req, res) => {
+    if (!req.session.user) {
+        res.status(401).send(
+            {greska: "Neautorizovan pristup"}
+        )
+
+        return
+    }
+
+    res.status(200).send(
+        req.session.user
+    )
+})
+
+app.post("/upit", (req, res) => {
+    if (!req.session.user) {
+        res.status(401).send(
+            {greska: "Neautorizovan pristup"}
+        )
+
+        return
+    }
+    const requestBody = req.body
+
+    const nekretnina_id = requestBody["nekretnina_id"]
+    const tekstUpita = requestBody["tekst_upita"]
+
+    let nekretnina = nekretnine.find(nekretnina => nekretnina.id === nekretnina_id)
+
+    if (!nekretnina) {
+        res.status(400).send(
+            {greska: `Nekretnina sa id-em ${nekretnina_id} ne postoji`}
+        )
+
+        return
+    }
+
+    nekretnina.upiti.push({
+        korisnik_id: req.session.user.id,
+        tekst_upita: tekstUpita
+    })
+
+    // TODO: Save to file
 })
 
 // Start the server
