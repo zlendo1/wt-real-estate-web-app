@@ -23,23 +23,33 @@ app.post('/login', (req, res) => {
     const bodyUsername = requestBody["username"]
     const bodyPassword = requestBody["password"]
 
-    const matchingUser = korisnici.find(
-        korisnik => korisnik.username === bodyUsername && bcrypt.compareSync(bodyPassword, korisnik.password)
-    )
+    bcrypt.hash(bodyPassword, 10, (err, hash) => {
+        if (err) {
+            res.status(500).send(
+                {greska: "Greška u enkripciji lozinke"}
+            )
 
-    if (!matchingUser) {
-        res.status(401).send(
-            {greska: "Neuspješna prijava"}
+            return
+        }
+
+        const matchingUser = korisnici.find(
+            korisnik => korisnik.username === bodyUsername && korisnik.password === hash
         )
 
-        return
-    }
+        if (!matchingUser) {
+            res.status(401).send(
+                {greska: "Neuspješna prijava"}
+            )
 
-    req.session.user = matchingUser
+            return
+        }
 
-    res.status(200).send(
-        {poruka: "Uspješna prijava"}
-    )
+        req.session.user = matchingUser
+
+        res.status(200).send(
+            {poruka: "Uspješna prijava"}
+        )
+    })
 })
 
 app.post("/logout", (req, res) => {
