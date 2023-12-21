@@ -1,12 +1,13 @@
-a:hover {
+#menu_list a {
+    margin: 5px;
+}
+
+#menu_list a:hover {
     color: #ff9900;
 }
 
-ul {
-    list-style: none;
-    text-align: center;
-}
-
-li {
-    display: inline;
+#menu_list {
+    width: fit-content;
+    display: flex;
+    margin: 0 auto;
 }
