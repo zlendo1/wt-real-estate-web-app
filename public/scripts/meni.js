@@ -6,13 +6,13 @@ function addMeni(loggedIn) {
 
     if (loggedIn) {
         meni.innerHTML = `
-            <a href="./profil.html">Profil</a>
+            <a href="http://localhost:3000/profil.html">Profil</a>
         `
     }
 
     meni.innerHTML += `
-        <a href="./nekretnine.html">Nekretnine</a>
-        <a href="./detalji.html">Detalji</a>
+        <a href="http://localhost:3000/nekretnine.html">Nekretnine</a>
+        <a href="http://localhost:3000/detalji.html">Detalji</a>
     `
 
     if (loggedIn) {
@@ -21,7 +21,7 @@ function addMeni(loggedIn) {
         `
     } else {
         meni.innerHTML += `
-            <a href="./prijava.html">Prijava</a>
+            <a href="http://localhost:3000/prijava.html">Prijava</a>
         `
     }
 
