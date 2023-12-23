@@ -252,6 +252,10 @@ app.get("/nekretnine", (req, res) => {
         })
 })
 
+app.get("/", (req, res) => {
+    res.sendFile(__dirname + "/public/html/nekretnine.html")
+})
+
 // Start the server
 app.listen(port, () => {
     console.log(`Server is running on http://localhost:${port}`)
