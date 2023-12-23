@@ -6,22 +6,23 @@ function addMeni(loggedIn) {
 
     if (loggedIn) {
         meni.innerHTML = `
-            <a href="http://localhost:3000/profil.html">Profil</a>
+            <a href="http://localhost:3000/profil">Profil</a>
         `
     }
 
     meni.innerHTML += `
-        <a href="http://localhost:3000/nekretnine.html">Nekretnine</a>
-        <a href="http://localhost:3000/detalji.html">Detalji</a>
+        <a href="http://localhost:3000">Nekretnine</a>
+        <a href="http://localhost:3000/detalji">Detalji</a>
     `
 
+    // TODO: This logout link is absolutely fucked, we'll change this later
     if (loggedIn) {
         meni.innerHTML += `
-            <a href="/logout">Odjava</a>
+            <a href="http://localhost:3000/logout">Odjava</a>
         `
     } else {
         meni.innerHTML += `
-            <a href="http://localhost:3000/prijava.html">Prijava</a>
+            <a href="http://localhost:3000/prijava">Prijava</a>
         `
     }
 
