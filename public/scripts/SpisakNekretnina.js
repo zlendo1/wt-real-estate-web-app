@@ -1,10 +1,8 @@
 let SpisakNekretnina = function () {
     let listaNekretnina = [];
-    let listaKorisnika = [];
 
-    let init = function (listaNekretnina, listaKorisnika) {
+    let init = function (listaNekretnina) {
         this.listaNekretnina = listaNekretnina
-        this.listaKorisnika = listaKorisnika
     }
 
     let filtrirajNekretnine = function (kriterij) {
