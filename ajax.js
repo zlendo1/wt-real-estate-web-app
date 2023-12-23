@@ -1,4 +1,4 @@
-const PoziviAjax = (() => {
+export const PozoviAjax = (() => {
 
     // fnCallback se u svim metodama poziva kada stigne
     // odgovor sa servera putem Ajax-a

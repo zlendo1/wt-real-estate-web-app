@@ -28,19 +28,19 @@ function spojiNekretnine(divReferenca, instancaModula, tip_nekretnine) {
     divReferenca.appendChild(itemList)
 }
 
-const divStan = document.getElementById("stan");
-const divKuca = document.getElementById("kuca");
-const divPp = document.getElementById("pp");
+import {PozoviAjax} from "../../ajax.js";
 
-import getNekretnine from "../../ajax.js";
+PozoviAjax.getNekretnine((err, listaNekretnina) => {
+    const divStan = document.getElementById("stan");
+    const divKuca = document.getElementById("kuca");
+    const divPp = document.getElementById("pp");
 
-const listaNekretnina = getNekretnine();
+    // instanciranje modula
+    let nekretnine = SpisakNekretnina();
+    nekretnine.init(listaNekretnina);
 
-// instanciranje modula
-let nekretnine = SpisakNekretnina();
-nekretnine.init(listaNekretnina);
-
-// pozivanje funkcije
-spojiNekretnine(divStan, nekretnine, "Stan");
-spojiNekretnine(divKuca, nekretnine, "Kuća");
-spojiNekretnine(divPp, nekretnine, "Poslovni prostor");
+    // pozivanje funkcije
+    spojiNekretnine(divStan, nekretnine, "Stan");
+    spojiNekretnine(divKuca, nekretnine, "Kuća");
+    spojiNekretnine(divPp, nekretnine, "Poslovni prostor");
+});
