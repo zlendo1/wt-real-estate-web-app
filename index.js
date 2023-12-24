@@ -3,6 +3,7 @@ const app = express()
 const port = 3000 // Port we will listen on
 
 app.use(express.json()) // for parsing application/json
+app.use(express.static(`${__dirname}/public`)) // for serving static files
 
 const session = require('express-session')
 app.use(session({
@@ -257,7 +258,7 @@ app.get("/nekretnine", (req, res) => {
 })
 
 app.get("/", (req, res) => {
-    res.sendFile(__dirname + "/public/html/nekretnine.html")
+    res.sendFile( `${__dirname}/public/html/nekretnine.html`)
 })
 
 // Start the server
