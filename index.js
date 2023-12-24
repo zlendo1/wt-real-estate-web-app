@@ -195,14 +195,17 @@ app.put("/korisnik", (req, res) => {
 
             if (bodyIme) {
                 matchingUser.ime = bodyIme
+                req.session.user.ime = bodyIme
             }
 
             if (bodyPrezime) {
                 matchingUser.prezime = bodyPrezime
+                req.session.user.prezime = bodyPrezime
             }
 
             if (bodyUsername) {
                 matchingUser.username = bodyUsername
+                req.session.user.username = bodyUsername
             }
 
             if (bodyPassword) {
@@ -216,6 +219,7 @@ app.put("/korisnik", (req, res) => {
                     }
 
                     matchingUser.password = hash
+                    req.session.user.password = hash
                 })
             }
 
