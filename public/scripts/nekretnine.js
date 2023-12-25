@@ -19,7 +19,9 @@ function spojiNekretnine(divReferenca, instancaModula, tip_nekretnine) {
             <p class="naziv">${item.naziv}</p>
             <p class="kvadratura">${item.kvadratura} m^3</p>
             <p class="cijena">${item.cijena} KM</p>
-            <button type="submit">Detalji</button>
+            <button onclick="window.location.href = 'http://localhost:3000/detalji';">
+                Detalji
+            </button>
             `
 
         itemList.appendChild(itemFrame)
