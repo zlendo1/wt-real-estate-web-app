@@ -1,3 +1,13 @@
+function logout() {
+    PozoviAjax.postLogout((err, res) => {
+        if (err) {
+            throw new Error(`Error: ${err.greska}. User's shouldn't get this EVER!`)
+        }
+
+        window.location.href = "http://localhost:3000"
+    })
+}
+
 function addMeni(loggedIn) {
     const meni = document.getElementById('meni')
 
@@ -18,7 +28,7 @@ function addMeni(loggedIn) {
     // TODO: This logout link is absolutely fucked, we'll change this later
     if (loggedIn) {
         menuList.innerHTML += `
-            <a href="http://localhost:3000/logout">Odjava</a>
+            <a href="javascript:logout()">Odjava</a>
         `
     } else {
         menuList.innerHTML += `
