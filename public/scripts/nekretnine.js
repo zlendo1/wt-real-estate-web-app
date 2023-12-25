@@ -28,7 +28,7 @@ function spojiNekretnine(divReferenca, instancaModula, tip_nekretnine) {
     divReferenca.appendChild(itemList)
 }
 
-import {PozoviAjax} from "../../ajax.js";
+import {PozoviAjax} from "./ajax.js";
 
 PozoviAjax.getNekretnine((err, listaNekretnina) => {
     const divStan = document.getElementById("stan");
