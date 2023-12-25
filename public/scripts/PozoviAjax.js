@@ -19,7 +19,7 @@ const PozoviAjax = (() => {
                 if (ajax.status === 200) {
                     fnCallback(null, jsonRes)
                 } else if (ajax.status === 500) {
-                    console.log(`Greška na serveru: ${jsonRes.greska}`)
+                    throw new Error(`Greška na serveru: ${jsonRes.greska}`)
                 } else {
                     fnCallback(jsonRes, null)
                 }
