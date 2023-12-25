@@ -29,8 +29,6 @@ function addMeni(loggedIn) {
     meni.appendChild(menuList)
 }
 
-import {PozoviAjax} from "./ajax.js"
-
 PozoviAjax.getKorisnik((_, user) => {
     const loggedIn = user !== null
 
