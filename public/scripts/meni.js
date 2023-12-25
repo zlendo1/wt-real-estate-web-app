@@ -5,23 +5,23 @@ function addMeni(loggedIn) {
     menuList.id = "menu_list"
 
     if (loggedIn) {
-        meni.innerHTML = `
+        menuList.innerHTML = `
             <a href="http://localhost:3000/profil">Profil</a>
         `
     }
 
-    meni.innerHTML += `
+    menuList.innerHTML += `
         <a href="http://localhost:3000">Nekretnine</a>
         <a href="http://localhost:3000/detalji">Detalji</a>
     `
 
     // TODO: This logout link is absolutely fucked, we'll change this later
     if (loggedIn) {
-        meni.innerHTML += `
+        menuList.innerHTML += `
             <a href="http://localhost:3000/logout">Odjava</a>
         `
     } else {
-        meni.innerHTML += `
+        menuList.innerHTML += `
             <a href="http://localhost:3000/prijava">Prijava</a>
         `
     }
