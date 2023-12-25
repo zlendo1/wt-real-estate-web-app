@@ -25,7 +25,6 @@ function addMeni(loggedIn) {
         <a href="http://localhost:3000/detalji">Detalji</a>
     `
 
-    // TODO: This logout link is absolutely fucked, we'll change this later
     if (loggedIn) {
         menuList.innerHTML += `
             <a href="javascript:logout()">Odjava</a>
