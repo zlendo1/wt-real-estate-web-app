@@ -8,8 +8,8 @@ app.use(express.static(`${__dirname}/public`)) // for serving static files
 const session = require('express-session')
 app.use(session({
     secret: 'secret',
-    resave: false,
-    saveUninitialized: false
+    resave: true,
+    saveUninitialized: true
 }))
 
 const bcrypt = require("bcrypt")
@@ -125,6 +125,7 @@ app.post("/upit", (req, res) => {
 
         return
     }
+
     const requestBody = req.body
 
     const nekretnina_id = requestBody["nekretnina_id"]
@@ -267,6 +268,10 @@ app.get("/detalji", (req, res) => {
 
 app.get("/prijava", (req, res) => {
     res.sendFile( `${__dirname}/public/html/prijava.html`)
+})
+
+app.get("/profil", (req, res) => {
+    res.sendFile( `${__dirname}/public/html/profil.html`)
 })
 
 // Start the server
