@@ -261,6 +261,14 @@ app.get("/", (req, res) => {
     res.sendFile( `${__dirname}/public/html/nekretnine.html`)
 })
 
+app.get("/detalji", (req, res) => {
+    res.sendFile( `${__dirname}/public/html/detalji.html`)
+})
+
+app.get("/prijava", (req, res) => {
+    res.sendFile( `${__dirname}/public/html/prijava.html`)
+})
+
 // Start the server
 app.listen(port, () => {
     console.log(`Server is running on http://localhost:${port}`)
