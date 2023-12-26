@@ -1,8 +1,9 @@
 const loginForm = document.getElementById('login_form')
 
 loginForm.addEventListener('submit', (event) => {
-    // TODO: FormData doesn't load, must use loading from elements
-    const formData = new FormData(this)
+    event.preventDefault()
+
+    const formData = new FormData(loginForm)
 
     const data = {}
     for (let [key, value] of formData.entries()) {
@@ -18,6 +19,4 @@ loginForm.addEventListener('submit', (event) => {
 
         window.location.href = "http://localhost:3000/"
     })
-
-    event.preventDefault()
 })
