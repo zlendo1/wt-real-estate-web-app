@@ -50,22 +50,28 @@ app.post('/login', (req, res) => {
     const bodyUsername = requestBody["username"]
     const bodyPassword = requestBody["password"]
 
-    bcrypt.hash(bodyPassword, 10, (err, hash) => {
-        if (err) {
-            res.status(500).send(
-                {greska: "Greška u enkripciji lozinke"}
-            )
+    readKorisnici()
+        .then(korisnici => {
+            const user = korisnici.find(korisnik => korisnik.username === bodyUsername)
 
-            return
-        }
-
-        readKorisnici()
-            .then(korisnici => {
-                const matchingUser = korisnici.find(
-                    korisnik => korisnik.username === bodyUsername && korisnik.password === hash
+            if (!user) {
+                res.status(401).send(
+                    {greska: "Neuspješna prijava"}
                 )
 
-                if (!matchingUser) {
+                return
+            }
+
+            bcrypt.compare(bodyPassword, user.password, (err, result) => {
+                if (err) {
+                    res.status(500).send(
+                        {greska: "Greška u provjeri lozinke"}
+                    )
+
+                    return
+                }
+
+                if (!result) {
                     res.status(401).send(
                         {greska: "Neuspješna prijava"}
                     )
@@ -73,18 +79,18 @@ app.post('/login', (req, res) => {
                     return
                 }
 
-                req.session.user = matchingUser
+                req.session.user = user
 
                 res.status(200).send(
                     {poruka: "Uspješna prijava"}
                 )
             })
-            .catch(err => {
-                res.status(500).send(
-                    {greska: "Greška u čitanju korisnika"}
-                )
-            })
-    })
+        })
+        .catch(err => {
+            res.status(500).send(
+                {greska: "Greška u čitanju korisnika"}
+            )
+        })
 })
 
 app.post("/logout", (req, res) => {

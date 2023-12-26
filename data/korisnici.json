@@ -12,5 +12,12 @@
         "prezime": "Nekic2",
         "username": "username2",
         "password": "hashPassworda2"
+    },
+    {
+        "id": 3,
+        "ime": "Tester",
+        "prezime": "Testerino",
+        "username": "test",
+        "password": "$2b$10$8jeH58Wm.xVQMCgUw3JareEkb.9ubYjWGhKAOgC5GnC8jXhU3qC.y"
     }
 ]
