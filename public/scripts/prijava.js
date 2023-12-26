@@ -1,8 +1,7 @@
 const loginForm = document.getElementById('login_form')
 
 loginForm.addEventListener('submit', (event) => {
-    event.preventDefault()
-
+    // TODO: FormData doesn't load, must use loading from elements
     const formData = new FormData(this)
 
     const data = {}
@@ -12,12 +11,13 @@ loginForm.addEventListener('submit', (event) => {
 
     PozoviAjax.postLogin(data.username, data.password, (err, res) => {
         if (err) {
-            alert(err)
-            console.log(`Error: ${err}`)
+            alert(err.greska)
 
             return
         }
 
         window.location.href = "http://localhost:3000/"
     })
+
+    event.preventDefault()
 })
