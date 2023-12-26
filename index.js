@@ -37,6 +37,14 @@ function writeNekretnine(nekretnine) {
 
 // Routes
 app.post('/login', (req, res) => {
+    if (req.session.user) {
+        res.status(403).send(
+            {greska: "Već ste prijavljeni"}
+        )
+
+        return
+    }
+
     const requestBody = req.body
 
     const bodyUsername = requestBody["username"]
