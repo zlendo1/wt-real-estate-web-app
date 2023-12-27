@@ -21,8 +21,8 @@ const data = (() => {
         return fs.readJson(`./data/${fileName}.json`)
     }
 
-    function impl_write(fileName) {
-        return fs.writeJson(`./data/${fileName}.json`)
+    function impl_write(fileName, content) {
+        return fs.writeJson(`./data/${fileName}.json`, content)
     }
 
     return {
@@ -158,7 +158,7 @@ app.post("/upit", (req, res) => {
                 tekst_upita: tekstUpita
             })
 
-            data.write("nekretnine")
+            data.write("nekretnine", nekretnine)
                 .then(() => {
                     res.status(200).send(
                         {poruka: "Upit je uspješno dodan"}
@@ -166,7 +166,7 @@ app.post("/upit", (req, res) => {
                 })
                 .catch(err => {
                     res.status(500).send(
-                        {greska: "Greška u čitanju nekretnina"}
+                        {greska: "Greška u pisanju nekretnina"}
                     )
                 })
         })
@@ -235,7 +235,7 @@ app.put("/korisnik", (req, res) => {
                 })
             }
 
-            data.write("korisnici")
+            data.write("korisnici", korisnici)
                 .then(() => {
                     res.status(200).send(
                         {poruka: "Podaci su uspješno ažurirani"}
@@ -243,7 +243,7 @@ app.put("/korisnik", (req, res) => {
                 })
                 .catch(err => {
                     res.status(500).send(
-                        {greska: "Greška u čitanju korisnika"}
+                        {greska: "Greška u pisanju korisnika"}
                     )
                 })
         })
@@ -271,17 +271,35 @@ app.get("/nekretnine", (req, res) => {
 app.post("/marketing/nekretnine", (req, res) => {
     const requestBody = req.body
 
-    const nizNekretnina = requestBody["nizNekretnina"]
+    const idNekretnina = requestBody["nizNekretnina"]
 
     data.read("marketing")
-        .then(pretrage => {
-            for (let id of nizNekretnina) {
-                if (!pretrage[id]) {
-                    pretrage[id] = 1
+        .then(statistike => {
+            for (let id of idNekretnina) {
+                if (!statistike[id]) {
+                    statistike[id] = {
+                        pretrage: 1,
+                        detalji: 1
+                    }
                 } else {
-                    pretrage[id] += 1
+                    statistike[id].pretrage += 1
                 }
             }
+
+            data.write("marketing", statistike)
+                .then(() => {
+                    res.status(200)
+                })
+                .catch(err => {
+                    res.status(500).send(
+                        {greska: "Greška u pisanju statistika"}
+                    )
+                })
+        })
+        .catch(err => {
+            res.status(500).send(
+                {greska: "Greška u čitanju statistika"}
+            )
         })
 })
 
