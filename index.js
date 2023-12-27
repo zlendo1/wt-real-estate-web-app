@@ -269,7 +269,7 @@ app.post("/marketing/nekretnine", (req, res) => {
                 if (!statistike[id]) {
                     statistike[id] = {
                         pretrage: 1,
-                        detalji: 1
+                        klikovi: 1
                     }
                 } else {
                     statistike[id].pretrage += 1
@@ -296,10 +296,10 @@ app.post("/marketing/nekretnina/:id", (req, res) => {
             if (!statistike[id]) {
                 statistike[id] = {
                     pretrage: 1,
-                    detalji: 1
+                    klikovi: 1
                 }
             } else {
-                statistike[id].detalji += 1
+                statistike[id].klikovi += 1
             }
 
             return data.write("marketing", statistike)
