@@ -249,7 +249,20 @@ app.put("/korisnik", (req, res) => {
 })
 
 app.post("/marketing/nekretnine", (req, res) => {
+    const requestBody = req.body
 
+    const nizNekretnina = requestBody["nizNekretnina"]
+
+    data.read("marketing")
+        .then(pretrage => {
+            for (let id of nizNekretnina) {
+                if (!pretrage[id]) {
+                    pretrage[id] = 1
+                } else {
+                    pretrage[id] += 1
+                }
+            }
+        })
 })
 
 app.get("/nekretnine", (req, res) => {
