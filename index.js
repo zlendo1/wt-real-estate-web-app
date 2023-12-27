@@ -46,22 +46,28 @@ app.post('/login', (req, res) => {
     const bodyUsername = requestBody["username"]
     const bodyPassword = requestBody["password"]
 
-    bcrypt.hash(bodyPassword, 10, (err, hash) => {
-        if (err) {
-            res.status(500).send(
-                {greska: "Greška u enkripciji lozinke"}
-            )
+    data.read("korisnici")
+        .then(korisnici => {
+            const user = korisnici.find(korisnik => korisnik.username === bodyUsername)
 
-            return
-        }
-
-        data.read("korisnici")
-            .then(korisnici => {
-                const matchingUser = korisnici.find(
-                    korisnik => korisnik.username === bodyUsername && korisnik.password === hash
+            if (!user) {
+                res.status(401).send(
+                    {greska: "Neuspješna prijava"}
                 )
 
-                if (!matchingUser) {
+                return
+            }
+
+            bcrypt.compare(bodyPassword, user.password, (err, result) => {
+                if (err) {
+                    res.status(500).send(
+                        {greska: "Greška u provjeri lozinke"}
+                    )
+
+                    return
+                }
+
+                if (!result) {
                     res.status(401).send(
                         {greska: "Neuspješna prijava"}
                     )
@@ -69,18 +75,18 @@ app.post('/login', (req, res) => {
                     return
                 }
 
-                req.session.user = matchingUser
+                req.session.user = user
 
                 res.status(200).send(
                     {poruka: "Uspješna prijava"}
                 )
             })
-            .catch(err => {
-                res.status(500).send(
-                    {greska: "Greška u čitanju korisnika"}
-                )
-            })
-    })
+        })
+        .catch(err => {
+            res.status(500).send(
+                {greska: "Greška u čitanju korisnika"}
+            )
+        })
 })
 
 app.post("/logout", (req, res) => {
@@ -248,6 +254,20 @@ app.put("/korisnik", (req, res) => {
         })
 })
 
+app.get("/nekretnine", (req, res) => {
+    data.read("nekretnine")
+        .then(nekretnine => {
+            res.status(200).send(
+                nekretnine
+            )
+        })
+        .catch(err => {
+            res.status(500).send(
+                {greska: "Greška u čitanju nekretnina"}
+            )
+        })
+})
+
 app.post("/marketing/nekretnine", (req, res) => {
     const requestBody = req.body
 
@@ -262,20 +282,6 @@ app.post("/marketing/nekretnine", (req, res) => {
                     pretrage[id] += 1
                 }
             }
-        })
-})
-
-app.get("/nekretnine", (req, res) => {
-    data.read("nekretnine")
-        .then(nekretnine => {
-            res.status(200).send(
-                nekretnine
-            )
-        })
-        .catch(err => {
-            res.status(500).send(
-                {greska: "Greška u čitanju nekretnina"}
-            )
         })
 })
 
