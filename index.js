@@ -18,7 +18,7 @@ const fs = require("fs-extra")
 
 const data = (() => {
     function impl_read(fileName) {
-        return fs.readJson(`./data/${fileName}.json`)
+        return fs.readJson("./data/" + fileName + ".json")
     }
 
     function impl_write(fileName, content) {
@@ -158,21 +158,16 @@ app.post("/upit", (req, res) => {
                 tekst_upita: tekstUpita
             })
 
-            data.write("nekretnine", nekretnine)
-                .then(() => {
-                    res.status(200).send(
-                        {poruka: "Upit je uspješno dodan"}
-                    )
-                })
-                .catch(err => {
-                    res.status(500).send(
-                        {greska: err}
-                    )
-                })
+            return data.write("nekretnine", nekretnine)
         })
         .catch(err => {
             res.status(500).send(
                 {greska: err}
+            )
+        })
+        .then(() => {
+            res.status(200).send(
+                {poruka: "Upit je uspješno dodan"}
             )
         })
 })
@@ -235,21 +230,16 @@ app.put("/korisnik", (req, res) => {
                 })
             }
 
-            data.write("korisnici", korisnici)
-                .then(() => {
-                    res.status(200).send(
-                        {poruka: "Podaci su uspješno ažurirani"}
-                    )
-                })
-                .catch(err => {
-                    res.status(500).send(
-                        {greska: err}
-                    )
-                })
+            return data.write("korisnici", korisnici)
         })
         .catch(err => {
             res.status(500).send(
                 {greska: err}
+            )
+        })
+        .then(() => {
+            res.status(200).send(
+                {poruka: "Podaci su uspješno ažurirani"}
             )
         })
 })
@@ -286,20 +276,15 @@ app.post("/marketing/nekretnine", (req, res) => {
                 }
             }
 
-            data.write("marketing", statistike)
-                .then(() => {
-                    res.status(200)
-                })
-                .catch(err => {
-                    res.status(500).send(
-                        {greska: err}
-                    )
-                })
+            return data.write("marketing", statistike)
         })
         .catch(err => {
             res.status(500).send(
                 {greska: err}
             )
+        })
+        .then(() => {
+            res.status(200)
         })
 })
 
@@ -317,19 +302,15 @@ app.post("/marketing/nekretnina/:id", (req, res) => {
                 statistike[id].detalji += 1
             }
 
-            data.write("marketing", statistike)
-                .then(() => {
-                    res.status(200)
-                })
-                .catch(err => {
-                    res.status(500).send(
-                        {greska: err}
-                    )
-                })
-        }).catch(err => {
+            return data.write("marketing", statistike)
+        })
+        .catch(err => {
             res.status(500).send(
                 {greska: err}
             )
+        })
+        .then(() => {
+            res.status(200)
         })
 })
 
