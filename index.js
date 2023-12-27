@@ -84,7 +84,7 @@ app.post('/login', (req, res) => {
         })
         .catch(err => {
             res.status(500).send(
-                {greska: "Greška u čitanju korisnika"}
+                {greska: err}
             )
         })
 })
@@ -166,13 +166,13 @@ app.post("/upit", (req, res) => {
                 })
                 .catch(err => {
                     res.status(500).send(
-                        {greska: "Greška u pisanju nekretnina"}
+                        {greska: err}
                     )
                 })
         })
         .catch(err => {
             res.status(500).send(
-                {greska: "Greška u čitanju nekretnina"}
+                {greska: err}
             )
         })
 })
@@ -243,13 +243,13 @@ app.put("/korisnik", (req, res) => {
                 })
                 .catch(err => {
                     res.status(500).send(
-                        {greska: "Greška u pisanju korisnika"}
+                        {greska: err}
                     )
                 })
         })
         .catch(err => {
             res.status(500).send(
-                {greska: "Greška u čitanju korisnika"}
+                {greska: err}
             )
         })
 })
@@ -263,7 +263,7 @@ app.get("/nekretnine", (req, res) => {
         })
         .catch(err => {
             res.status(500).send(
-                {greska: "Greška u čitanju nekretnina"}
+                {greska: err}
             )
         })
 })
@@ -292,13 +292,13 @@ app.post("/marketing/nekretnine", (req, res) => {
                 })
                 .catch(err => {
                     res.status(500).send(
-                        {greska: "Greška u pisanju statistika"}
+                        {greska: err}
                     )
                 })
         })
         .catch(err => {
             res.status(500).send(
-                {greska: "Greška u čitanju statistika"}
+                {greska: err}
             )
         })
 })
@@ -323,12 +323,12 @@ app.post("/marketing/nekretnina/:id", (req, res) => {
                 })
                 .catch(err => {
                     res.status(500).send(
-                        {greska: "Greška u pisanju statistika"}
+                        {greska: err}
                     )
                 })
         }).catch(err => {
             res.status(500).send(
-                {greska: "Greška u čitanju statistika"}
+                {greska: err}
             )
         })
 })
