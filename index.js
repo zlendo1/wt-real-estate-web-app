@@ -266,13 +266,16 @@ app.post("/marketing/nekretnine", (req, res) => {
     data.read("marketing")
         .then(statistike => {
             for (let id of idNekretnina) {
-                if (!statistike[id]) {
-                    statistike[id] = {
+                let statistika = statistike.find(statistika => statistika.id === id)
+
+                if (!statistika) {
+                    statistike.push({
+                        id: id,
                         pretrage: 1,
                         klikovi: 1
-                    }
+                    })
                 } else {
-                    statistike[id].pretrage += 1
+                    statistika.pretrage += 1
                 }
             }
 
@@ -293,13 +296,16 @@ app.post("/marketing/nekretnina/:id", (req, res) => {
 
     data.read("marketing")
         .then(statistike => {
-            if (!statistike[id]) {
-                statistike[id] = {
+            let statistika = statistike.find(statistika => statistika.id === id)
+
+            if (!statistika) {
+                statistike.push({
+                    id: id,
                     pretrage: 1,
                     klikovi: 1
-                }
+                })
             } else {
-                statistike[id].klikovi += 1
+                statistika.klikovi += 1
             }
 
             return data.write("marketing", statistike)
@@ -311,6 +317,50 @@ app.post("/marketing/nekretnina/:id", (req, res) => {
         })
         .then(() => {
             res.status(200)
+        })
+})
+
+app.post("/marketing/osvjezi", (req, res) => {
+    req.setTimeout(500, () => {
+        res.status(408).send(
+            {greska: "Zahtjev je istekao"}
+        )
+    })
+
+    const requestBody = req.body
+
+    if (requestBody) {
+        req.session.idStatistika = requestBody["nizNekretnina"]
+    }
+
+    const idNekretnina = req.session.idStatistika
+
+    data.read("marketing")
+        .then(statistike => {
+            let result = []
+
+            for (let id of idNekretnina) {
+                let statistika = statistike.find(statistika => statistika.id === id)
+
+                if (!statistika) {
+                    result.push({
+                        id: id,
+                        pretrage: 1,
+                        klikovi: 1
+                    })
+                } else {
+                    result.push(statistika)
+                }
+            }
+
+            res.status(200).send(
+                result
+            )
+        })
+        .catch(err => {
+            res.status(500).send(
+                {greska: err}
+            )
         })
 })
 
