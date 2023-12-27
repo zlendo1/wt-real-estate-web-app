@@ -1,3 +1,27 @@
+#pretraga_form {
+    display: block;
+}
+
+#pretraga_grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px 20px;
+}
+
+#pretraga_grid .grid_item {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+#pretraga_grid .grid_item > label {
+    margin: 5px auto;
+}
+
+#pretraga_grid .grid_item > label > input {
+    padding: 5px 5px;
+}
+
 .itemList {
     list-style: none;
     display: grid;
