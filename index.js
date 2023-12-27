@@ -16,24 +16,20 @@ const bcrypt = require("bcrypt")
 
 const fs = require("fs-extra")
 
-const pathKorisnici = "./data/korisnici.json"
-const pathNekretnine = "./data/nekretnine.json"
+const data = (() => {
+    function impl_read(fileName) {
+        return fs.readJson(`./data/${fileName}.json`)
+    }
 
-function readKorisnici() {
-    return fs.readJson(pathKorisnici)
-}
+    function impl_write(fileName) {
+        return fs.writeJson(`./data/${fileName}.json`)
+    }
 
-function readNekretnine() {
-    return fs.readJson(pathNekretnine)
-}
-
-function writeKorisnici(korisnici) {
-    return fs.writeJson(pathKorisnici, JSON.stringify(korisnici))
-}
-
-function writeNekretnine(nekretnine) {
-    return fs.writeJson(pathNekretnine, JSON.stringify(nekretnine))
-}
+    return {
+        read: impl_read,
+        write: impl_write
+    }
+})()
 
 // Routes
 app.post('/login', (req, res) => {
@@ -59,7 +55,7 @@ app.post('/login', (req, res) => {
             return
         }
 
-        readKorisnici()
+        data.read("korisnici")
             .then(korisnici => {
                 const matchingUser = korisnici.find(
                     korisnik => korisnik.username === bodyUsername && korisnik.password === hash
@@ -139,7 +135,7 @@ app.post("/upit", (req, res) => {
     const nekretnina_id = requestBody["nekretnina_id"]
     const tekstUpita = requestBody["tekst_upita"]
 
-    readNekretnine()
+    data.read("nekretnine")
         .then(nekretnine => {
             let nekretnina = nekretnine.find(nekretnina => nekretnina.id === nekretnina_id)
 
@@ -156,7 +152,7 @@ app.post("/upit", (req, res) => {
                 tekst_upita: tekstUpita
             })
 
-            writeNekretnine(nekretnine)
+            data.write("nekretnine")
                 .then(() => {
                     res.status(200).send(
                         {poruka: "Upit je uspješno dodan"}
@@ -191,7 +187,7 @@ app.put("/korisnik", (req, res) => {
     const bodyUsername = requestBody["username"]
     const bodyPassword = requestBody["password"]
 
-    readKorisnici()
+    data.read("korisnici")
         .then(korisnici => {
             let matchingUser = korisnici.find(korisnik => korisnik.id === req.session.user.id)
 
@@ -233,7 +229,7 @@ app.put("/korisnik", (req, res) => {
                 })
             }
 
-            writeKorisnici(korisnici)
+            data.write("korisnici")
                 .then(() => {
                     res.status(200).send(
                         {poruka: "Podaci su uspješno ažurirani"}
@@ -252,8 +248,12 @@ app.put("/korisnik", (req, res) => {
         })
 })
 
+app.post("/marketing/nekretnine", (req, res) => {
+
+})
+
 app.get("/nekretnine", (req, res) => {
-    readNekretnine()
+    data.read("nekretnine")
         .then(nekretnine => {
             res.status(200).send(
                 nekretnine
