@@ -303,6 +303,36 @@ app.post("/marketing/nekretnine", (req, res) => {
         })
 })
 
+app.post("/marketing/nekretnina/:id", (req, res) => {
+    const id = req.params.id
+
+    data.read("marketing")
+        .then(statistike => {
+            if (!statistike[id]) {
+                statistike[id] = {
+                    pretrage: 1,
+                    detalji: 1
+                }
+            } else {
+                statistike[id].detalji += 1
+            }
+
+            data.write("marketing", statistike)
+                .then(() => {
+                    res.status(200)
+                })
+                .catch(err => {
+                    res.status(500).send(
+                        {greska: "Greška u pisanju statistika"}
+                    )
+                })
+        }).catch(err => {
+            res.status(500).send(
+                {greska: "Greška u čitanju statistika"}
+            )
+        })
+})
+
 app.get("/", (req, res) => {
     res.sendFile( `${__dirname}/public/html/nekretnine.html`)
 })
