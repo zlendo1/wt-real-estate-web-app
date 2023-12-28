@@ -329,7 +329,7 @@ app.post("/marketing/osvjezi", (req, res) => {
 
     const requestBody = req.body
 
-    if (requestBody) {
+    if (requestBody["nizNekretnina"]) {
         req.session.idStatistika = requestBody["nizNekretnina"]
     }
 
