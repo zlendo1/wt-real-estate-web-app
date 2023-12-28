@@ -14,11 +14,18 @@ function spojiNekretnine(divReferenca, instancaModula, tip_nekretnine) {
             "Poslovni prostor": "office"
         }
 
+        // TODO: Implement detalji click event
         itemFrame.innerHTML = `
             <img src="../res/${imageNames[item.tip_nekretnine]}.png" alt="stan">
             <p class="naziv">${item.naziv}</p>
             <p class="kvadratura">${item.kvadratura} m^3</p>
             <p class="cijena">${item.cijena} KM</p>
+            <p class="statistikaGrid">
+                <p>Broj pretraga:</p>
+                <div class="pretrage" id="pretrage-${item.id}" hidden></div>
+                <p>Broj klikova:</p>
+                <div class="klikovi" id="klikovi-${item.id}" hidden></div>
+            </p>
             <button onclick="window.location.href = 'http://localhost:3000/detalji';">
                 Detalji
             </button>
