@@ -1,5 +1,7 @@
-function spojiNekretnine(divReferenca, instancaModula, tip_nekretnine) {
-    const data = instancaModula.filtrirajNekretnine({ tip_nekretnine: tip_nekretnine });
+function spojiNekretnine(divReferenca, instancaModula, tip_nekretnine, kriterij = {}) {
+    kriterij.tip_nekretnine = tip_nekretnine
+
+    const data = instancaModula.filtrirajNekretnine(kriterij);
 
     const itemList = document.createElement('div')
     itemList.classList.add("itemList")
@@ -14,7 +16,6 @@ function spojiNekretnine(divReferenca, instancaModula, tip_nekretnine) {
             "Poslovni prostor": "office"
         }
 
-        // TODO: Implement detalji click event
         itemFrame.innerHTML = `
             <img src="../res/${imageNames[item.tip_nekretnine]}.png" alt="stan">
             <p class="naziv">${item.naziv}</p>
@@ -26,9 +27,7 @@ function spojiNekretnine(divReferenca, instancaModula, tip_nekretnine) {
                 <p>Broj klikova:</p>
                 <div class="klikovi" id="klikovi-${item.id}" hidden></div>
             </p>
-            <button onclick="window.location.href = 'http://localhost:3000/detalji';">
-                Detalji
-            </button>
+            <button class="detaljiButton" id="detalji-${item.id}">Detalji</button>
             `
 
         itemList.appendChild(itemFrame)
@@ -42,12 +41,52 @@ PozoviAjax.getNekretnine((err, listaNekretnina) => {
     const divKuca = document.getElementById("kuca");
     const divPp = document.getElementById("pp");
 
+    const spojiSveNekretnine = (kriterij = {}) => {
+        spojiNekretnine(divStan, nekretnine, "Stan", kriterij);
+        spojiNekretnine(divKuca, nekretnine, "Kuća", kriterij);
+        spojiNekretnine(divPp, nekretnine, "Poslovni prostor", kriterij);
+
+        MarketingAjax.novoFiltriranje(nekretnine.filtrirajNekretnine(kriterij))
+    }
+
     // instanciranje modula
     let nekretnine = SpisakNekretnina();
     nekretnine.init(listaNekretnina);
 
     // pozivanje funkcije
-    spojiNekretnine(divStan, nekretnine, "Stan");
-    spojiNekretnine(divKuca, nekretnine, "Kuća");
-    spojiNekretnine(divPp, nekretnine, "Poslovni prostor");
+    spojiSveNekretnine()
+
+    const divNekretnine = document.getElementById("nekretnine_container")
+    const pretragaForm = document.getElementById("pretraga_form")
+
+    pretragaForm.addEventListener('submit', (event) => {
+        event.preventDefault()
+
+        const formData = new FormData(pretragaForm)
+
+        const kriterij = {}
+        for (let [key, value] of formData.entries()) {
+            kriterij[key] = value.length > 0 ? value : undefined
+        }
+
+        spojiSveNekretnine(kriterij)
+    })
+
+    const buttons = document.getElementsByClassName("detaljiButton")
+
+    for (let button of buttons) {
+        button.addEventListener('click', (event) => {
+            const numberRegex = /\d+/
+            const id = button.id.match(numberRegex)[0]
+
+            MarketingAjax.klikNekretnina(id)
+        })
+    }
+
+    const updateStats = () => {
+        MarketingAjax.osvjeziPretrage(divNekretnine)
+        MarketingAjax.osvjeziKlikove(divNekretnine)
+    }
+
+    setInterval(updateStats, 500)
 });
