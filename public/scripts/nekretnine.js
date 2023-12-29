@@ -3,8 +3,12 @@ function spojiNekretnine(divReferenca, instancaModula, tip_nekretnine, kriterij 
 
     const data = instancaModula.filtrirajNekretnine(kriterij);
 
-    const itemList = document.createElement('div')
+    const itemListCollection = Array.from(divReferenca.getElementsByClassName("itemList"))
+
+    const itemList = itemListCollection.length > 0 ? itemListCollection[0] : document.createElement('div')
     itemList.classList.add("itemList")
+
+    itemList.innerHTML = ""     // Delete all children
 
     data.forEach(item => {
         const itemFrame = document.createElement('div')
