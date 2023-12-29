@@ -87,6 +87,7 @@ PozoviAjax.getNekretnine((err, listaNekretnina) => {
         })
     }
 
+    // TODO: Osvjezi display seems not to work and file is possibly not formatted correctly, priority: high
     const updateStats = () => {
         MarketingAjax.osvjeziPretrage(divNekretnine)
         MarketingAjax.osvjeziKlikove(divNekretnine)
