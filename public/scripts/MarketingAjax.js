@@ -43,7 +43,7 @@ const MarketingAjax = (() => {
             detaljiId = null
         }
 
-        callAjax("POST", "/nekretnine", fnCallback, idNekretnina)
+        callAjax("POST", "/nekretnine", fnCallback, { nizNekretnina: idNekretnina})
     }
 
     function impl_klikNekretnina(idNekretnine) {
@@ -64,7 +64,7 @@ const MarketingAjax = (() => {
 
             const numberRegex = /\d+/
 
-            return divPretrageCollection.map(div => div.id.match(numberRegex))[0]
+            return Array.from(divPretrageCollection).map(div => div.id.match(numberRegex)[0])
         }
 
         function fnCallback(err, data) {
@@ -75,7 +75,7 @@ const MarketingAjax = (() => {
             calledFilter = false
 
             for (let statistika of data) {
-                const divPretrage = document.getElementById(`pretrage-${statistika.nekretnina_id}`)
+                const divPretrage = document.getElementById(`pretrage-${statistika.id}`)
 
                 divPretrage.innerHTML = statistika.pretrage
                 divPretrage.hidden = false
@@ -83,7 +83,7 @@ const MarketingAjax = (() => {
         }
 
         callAjax("POST", `/osvjezi`, fnCallback,
-            calledFilter ? null : (detaljiId ? [detaljiId] : getIdNekretnine()))
+            !calledFilter ? null : { nizNekretnina: detaljiId ? [detaljiId] : getIdNekretnine() })
     }
 
     function impl_osvjeziKlikove(divNekretnine) {
@@ -92,7 +92,7 @@ const MarketingAjax = (() => {
 
             const numberRegex = /\d+/
 
-            return divKlikoviCollection.map(div => div.id.match(numberRegex))
+            return Array.from(divKlikoviCollection).map(div => div.id.match(numberRegex)[0])
         }
 
         function fnCallback(err, data) {
@@ -101,7 +101,7 @@ const MarketingAjax = (() => {
             }
 
             for (let statistika of data) {
-                const divKlikovi = document.getElementById(`klikovi-${statistika.nekretnina_id}`)
+                const divKlikovi = document.getElementById(`klikovi-${statistika.id}`)
 
                 divKlikovi.innerHTML = statistika.klikovi
                 divKlikovi.hidden = false
@@ -109,7 +109,7 @@ const MarketingAjax = (() => {
         }
 
         callAjax("POST", `/osvjezi`, fnCallback,
-            calledFilter ? null : (detaljiId ? [detaljiId] : getIdNekretnine()))
+            !calledFilter ? null : { nizNekretnina: detaljiId ? [detaljiId] : getIdNekretnine() })
     }
 
     return {
