@@ -18,7 +18,7 @@ const fs = require("fs-extra")
 
 const data = (() => {
     function impl_read(fileName) {
-        return fs.readJson("./data/" + fileName + ".json")
+        return fs.readJson(`./data/${fileName}.json`)
     }
 
     function impl_write(fileName, content) {
@@ -84,7 +84,7 @@ app.post('/login', (req, res) => {
         })
         .catch(err => {
             res.status(500).send(
-                {greska: err}
+                {greska: err.message}
             )
         })
 })
@@ -162,7 +162,7 @@ app.post("/upit", (req, res) => {
         })
         .catch(err => {
             res.status(500).send(
-                {greska: err}
+                {greska: err.message}
             )
         })
         .then(() => {
@@ -234,7 +234,7 @@ app.put("/korisnik", (req, res) => {
         })
         .catch(err => {
             res.status(500).send(
-                {greska: err}
+                {greska: err.message}
             )
         })
         .then(() => {
@@ -253,7 +253,7 @@ app.get("/nekretnine", (req, res) => {
         })
         .catch(err => {
             res.status(500).send(
-                {greska: err}
+                {greska: err.message}
             )
         })
 })
@@ -283,7 +283,7 @@ app.post("/marketing/nekretnine", (req, res) => {
         })
         .catch(err => {
             res.status(500).send(
-                {greska: err}
+                {greska: err.message}
             )
         })
         .then(() => {
@@ -312,7 +312,7 @@ app.post("/marketing/nekretnina/:id", (req, res) => {
         })
         .catch(err => {
             res.status(500).send(
-                {greska: err}
+                {greska: err.message}
             )
         })
         .then(() => {
@@ -359,7 +359,7 @@ app.post("/marketing/osvjezi", (req, res) => {
         })
         .catch(err => {
             res.status(500).send(
-                {greska: err}
+                {greska: err.message}
             )
         })
 })
