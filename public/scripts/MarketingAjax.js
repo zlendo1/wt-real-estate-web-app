@@ -1,5 +1,5 @@
 const MarketingAjax = (() => {
-    let calledFilter = false
+    let calledFilter = true
     let detaljiId = null
 
     function callAjax(method, url, fnCallback, data = null) {
@@ -32,8 +32,6 @@ const MarketingAjax = (() => {
     }
 
     function impl_novoFiltriranje(listaFiltriranihNekretnina) {
-        detaljiId = null
-
         const idNekretnina = listaFiltriranihNekretnina.map(nekretnina => nekretnina.id)
 
         function fnCallback(err, data) {
@@ -42,18 +40,19 @@ const MarketingAjax = (() => {
             }
 
             calledFilter = true
+            detaljiId = null
         }
 
         callAjax("POST", "/nekretnine", fnCallback, idNekretnina)
     }
 
     function impl_klikNekretnina(idNekretnine) {
-        detaljiId = idNekretnine
-
         function fnCallback(err, data) {
             if (err) {
                 throw new Error(`This literally wasn't supposed to happen: ${err}`)
             }
+
+            detaljiId = idNekretnine
         }
 
         callAjax("POST", `/nekretnina/${idNekretnine}`, fnCallback)
@@ -65,15 +64,15 @@ const MarketingAjax = (() => {
 
             const numberRegex = /\d+/
 
-            return divPretrageCollection.map(div => div.id.match(numberRegex))
+            return divPretrageCollection.map(div => div.id.match(numberRegex))[0]
         }
 
         function fnCallback(err, data) {
-            calledFilter = false
-
             if (err) {
                 return
             }
+
+            calledFilter = false
 
             for (let statistika of data) {
                 const divPretrage = document.getElementById(`pretrage-${statistika.nekretnina_id}`)
