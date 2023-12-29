@@ -292,7 +292,7 @@ app.post("/marketing/nekretnine", (req, res) => {
 })
 
 app.post("/marketing/nekretnina/:id", (req, res) => {
-    const id = req.params.id
+    const id = parseInt(req.params.id)
 
     data.read("marketing")
         .then(statistike => {
