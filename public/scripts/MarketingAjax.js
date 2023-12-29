@@ -34,6 +34,7 @@ const MarketingAjax = (() => {
     function impl_novoFiltriranje(listaFiltriranihNekretnina) {
         const idNekretnina = listaFiltriranihNekretnina.map(nekretnina => nekretnina.id)
 
+        // TODO: This callback is never called, find out why
         function fnCallback(err, data) {
             if (err) {
                 throw new Error(`This literally wasn't supposed to happen: ${err}`)
