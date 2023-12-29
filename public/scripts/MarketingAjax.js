@@ -82,7 +82,7 @@ const MarketingAjax = (() => {
             }
         }
 
-        callAjax("POST", `/marketing/osvjezi`, fnCallback,
+        callAjax("POST", `/osvjezi`, fnCallback,
             calledFilter ? null : (detaljiId ? [detaljiId] : getIdNekretnine()))
     }
 
@@ -108,7 +108,7 @@ const MarketingAjax = (() => {
             }
         }
 
-        callAjax("POST", `/marketing/osvjezi`, fnCallback,
+        callAjax("POST", `/osvjezi`, fnCallback,
             calledFilter ? null : (detaljiId ? [detaljiId] : getIdNekretnine()))
     }
 
