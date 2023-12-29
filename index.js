@@ -287,7 +287,7 @@ app.post("/marketing/nekretnine", (req, res) => {
             )
         })
         .then(() => {
-            res.status(200)
+            res.status(200).send()
         })
 })
 
@@ -316,7 +316,7 @@ app.post("/marketing/nekretnina/:id", (req, res) => {
             )
         })
         .then(() => {
-            res.status(200)
+            res.status(200).send()
         })
 })
 
