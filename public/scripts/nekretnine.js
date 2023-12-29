@@ -1,7 +1,7 @@
 function spojiNekretnine(divReferenca, instancaModula, tip_nekretnine, kriterij = {}) {
-    kriterij.tip_nekretnine = tip_nekretnine
+    const newKriterij = { ...kriterij, tip_nekretnine: tip_nekretnine }
 
-    const data = instancaModula.filtrirajNekretnine(kriterij);
+    const data = instancaModula.filtrirajNekretnine(newKriterij);
 
     const itemListCollection = Array.from(divReferenca.getElementsByClassName("itemList"))
 
@@ -31,8 +31,19 @@ function spojiNekretnine(divReferenca, instancaModula, tip_nekretnine, kriterij 
                 <p>Broj klikova:</p>
                 <div class="klikovi" id="klikovi-${item.id}" hidden></div>
             </p>
-            <button class="detaljiButton" id="detalji-${item.id}">Detalji</button>
             `
+
+        const button = document.createElement("button")
+
+        button.classList.add("detaljiButton")
+        button.id = `detalji-${item.id}`
+        button.innerText = "Detalji"
+
+        button.addEventListener('click', (event) => {
+            MarketingAjax.klikNekretnina(item.id)
+        })
+
+        itemFrame.appendChild(button)
 
         itemList.appendChild(itemFrame)
     })
@@ -75,17 +86,6 @@ PozoviAjax.getNekretnine((err, listaNekretnina) => {
 
         spojiSveNekretnine(kriterij)
     })
-
-    const buttons = document.getElementsByClassName("detaljiButton")
-
-    for (let button of buttons) {
-        button.addEventListener('click', (event) => {
-            const numberRegex = /\d+/
-            const id = button.id.match(numberRegex)[0]
-
-            MarketingAjax.klikNekretnina(id)
-        })
-    }
 
     // TODO: Osvjezi display seems not to work and file is possibly not formatted correctly, priority: high
     const updateStats = () => {
