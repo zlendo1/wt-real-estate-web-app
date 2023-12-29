@@ -65,7 +65,7 @@ const MarketingAjax = (() => {
 
             const numberRegex = /\d+/
 
-            return Array.from(divPretrageCollection).map(div => div.id.match(numberRegex)[0])
+            return Array.from(divPretrageCollection).map(div => parseInt(div.id.match(numberRegex)[0]))
         }
 
         function fnCallback(err, data) {
@@ -93,7 +93,7 @@ const MarketingAjax = (() => {
 
             const numberRegex = /\d+/
 
-            return Array.from(divKlikoviCollection).map(div => div.id.match(numberRegex)[0])
+            return Array.from(divKlikoviCollection).map(div => parseInt(div.id.match(numberRegex)[0]))
         }
 
         function fnCallback(err, data) {
