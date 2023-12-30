@@ -68,10 +68,8 @@ PozoviAjax.getNekretnine((err, listaNekretnina) => {
     let nekretnine = SpisakNekretnina();
     nekretnine.init(listaNekretnina);
 
-    // pozivanje funkcije
     spojiSveNekretnine()
 
-    const divNekretnine = document.getElementById("nekretnine_container")
     const pretragaForm = document.getElementById("pretraga_form")
 
     pretragaForm.addEventListener('submit', (event) => {
@@ -86,6 +84,8 @@ PozoviAjax.getNekretnine((err, listaNekretnina) => {
 
         spojiSveNekretnine(kriterij)
     })
+
+    const divNekretnine = document.getElementById("nekretnine_container")
 
     const updateStats = () => {
         MarketingAjax.osvjeziPretrage(divNekretnine)
