@@ -3,3 +3,25 @@
 html {
     background-color: #fdf1d3;
 }
+
+.centerHorizontal {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.centerVertical {
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
+.center {
+    margin: auto;
+}
+
+.alignLeft {
+    text-align: left;
+}
+
+.alignRight {
+    text-align: right;
+}
