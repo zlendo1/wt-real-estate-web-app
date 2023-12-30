@@ -31,6 +31,11 @@
 
 .itemFrame {
     padding: 10px 10px;
+    width: 300px
+}
+
+.itemFrame.expanded {
+    width: 500px;
 }
 
 .itemFrame div {

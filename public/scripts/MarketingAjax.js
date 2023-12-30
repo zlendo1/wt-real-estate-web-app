@@ -1,6 +1,6 @@
 const MarketingAjax = (() => {
     let calledFilter = true
-    let detaljiId = null
+    let divExpandedFrame = null
 
     function callAjax(method, url, fnCallback, data = null) {
         const ROOT = "http://localhost:3000/marketing"
@@ -41,7 +41,7 @@ const MarketingAjax = (() => {
             }
 
             calledFilter = true
-            detaljiId = null
+            divExpandedFrame = null
         }
 
         callAjax("POST", "/nekretnine", fnCallback, { nizNekretnina: idNekretnina})
@@ -53,7 +53,12 @@ const MarketingAjax = (() => {
                 throw new Error(`This literally wasn't supposed to happen: ${err}`)
             }
 
-            detaljiId = idNekretnine
+            if (divExpandedFrame) {
+                divExpandedFrame.classList.remove("expanded")
+            }
+
+            divExpandedFrame = document.getElementById(`detalji-${idNekretnine}`).parentElement
+            divExpandedFrame.classList.add("expanded")
         }
 
         callAjax("POST", `/nekretnina/${idNekretnine}`, fnCallback)
@@ -75,17 +80,20 @@ const MarketingAjax = (() => {
             }
         }
 
+        const extractInt = (str) => {
+            const numberRegex = /\d+/
+
+            return parseInt(str.match(numberRegex)[0])
+        }
+
+
         const getIdNekretnine = () => {
-            const extractInt = (str) => {
-                const numberRegex = /\d+/
-
-                return parseInt(str.match(numberRegex)[0])
-            }
-
             const divCollection = divNekretnine.getElementsByClassName(className)
 
             return Array.from(divCollection).map(div => extractInt(div.id))
         }
+
+        const detaljiId = !divExpandedFrame ? null : extractInt(divExpandedFrame.getElementsByClassName("detaljiButton")[0].id)
 
         callAjax("POST", `/osvjezi`, fnCallback,
             !calledFilter ? null : { nizNekretnina: detaljiId ? [detaljiId] : getIdNekretnine() })
