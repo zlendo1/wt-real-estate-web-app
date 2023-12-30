@@ -81,7 +81,7 @@ PozoviAjax.getNekretnine((err, listaNekretnina) => {
 
         const kriterij = {}
         for (let [key, value] of formData.entries()) {
-            kriterij[key] = value.length > 0 ? value : undefined
+            kriterij[key] = value.length > 0 ? parseInt(value) : undefined
         }
 
         spojiSveNekretnine(kriterij)
