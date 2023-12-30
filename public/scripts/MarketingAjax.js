@@ -59,16 +59,8 @@ const MarketingAjax = (() => {
         callAjax("POST", `/nekretnina/${idNekretnine}`, fnCallback)
     }
 
-    function impl_osvjeziPretrage(divNekretnine) {
-        const getIdNekretnine = () => {
-            const divPretrageCollection = divNekretnine.getElementsByClassName("pretrage")
-
-            const numberRegex = /\d+/
-
-            return Array.from(divPretrageCollection).map(div => parseInt(div.id.match(numberRegex)[0]))
-        }
-
-        function fnCallback(err, data) {
+    function _osvjezi(className, divNekretnine) {
+        const fnCallback = (err, data) => {
             if (err) {
                 return
             }
@@ -76,41 +68,35 @@ const MarketingAjax = (() => {
             calledFilter = false
 
             for (let statistika of data) {
-                const divPretrage = document.getElementById(`pretrage-${statistika.id}`)
+                const divStatistika = document.getElementById(`${className}-${statistika.id}`)
 
-                divPretrage.innerHTML = statistika.pretrage
-                divPretrage.hidden = false
+                divStatistika.innerHTML = statistika[className]
+                divStatistika.hidden = false
             }
+        }
+
+        const getIdNekretnine = () => {
+            const extractInt = (str) => {
+                const numberRegex = /\d+/
+
+                return parseInt(str.match(numberRegex)[0])
+            }
+
+            const divCollection = divNekretnine.getElementsByClassName(className)
+
+            return Array.from(divCollection).map(div => extractInt(div.id))
         }
 
         callAjax("POST", `/osvjezi`, fnCallback,
             !calledFilter ? null : { nizNekretnina: detaljiId ? [detaljiId] : getIdNekretnine() })
     }
 
+    function impl_osvjeziPretrage(divNekretnine) {
+        _osvjezi("pretrage", divNekretnine)
+    }
+
     function impl_osvjeziKlikove(divNekretnine) {
-        const getIdNekretnine = () => {
-            const divKlikoviCollection = divNekretnine.getElementsByClassName("klikovi")
-
-            const numberRegex = /\d+/
-
-            return Array.from(divKlikoviCollection).map(div => parseInt(div.id.match(numberRegex)[0]))
-        }
-
-        function fnCallback(err, data) {
-            if (err) {
-                return
-            }
-
-            for (let statistika of data) {
-                const divKlikovi = document.getElementById(`klikovi-${statistika.id}`)
-
-                divKlikovi.innerHTML = statistika.klikovi
-                divKlikovi.hidden = false
-            }
-        }
-
-        callAjax("POST", `/osvjezi`, fnCallback,
-            !calledFilter ? null : { nizNekretnina: detaljiId ? [detaljiId] : getIdNekretnine() })
+        _osvjezi("klikovi", divNekretnine)
     }
 
     return {
