@@ -21,16 +21,16 @@ function spojiNekretnine(divReferenca, instancaModula, tip_nekretnine, kriterij 
         }
 
         itemFrame.innerHTML = `
-            <img src="../res/${imageNames[item.tip_nekretnine]}.png" alt="stan">
-            <p class="naziv">${item.naziv}</p>
-            <p class="kvadratura">${item.kvadratura} m^3</p>
-            <p class="cijena">${item.cijena} KM</p>
-            <p class="statistikaGrid">
-                <p>Broj pretraga:</p>
-                <div class="pretrage" id="pretrage-${item.id}" hidden></div>
-                <p>Broj klikova:</p>
-                <div class="klikovi" id="klikovi-${item.id}" hidden></div>
-            </p>
+            <img class="centerHorizontal" src="../res/${imageNames[item.tip_nekretnine]}.png" alt="stan">
+            <div class="naziv">${item.naziv}</div>
+            <div class="kvadratura">${item.kvadratura} m^3</div>
+            <div class="cijena alignRight">${item.cijena} KM</div>
+            <div class="statistikaGrid">
+                <div>Broj pretraga:</div>
+                <div class="pretrage alignRight" id="pretrage-${item.id}" hidden></div>
+                <div>Broj klikova:</div>
+                <div class="klikovi alignRight" id="klikovi-${item.id}" hidden></div>
+            </div>
             `
 
         const button = document.createElement("button")
