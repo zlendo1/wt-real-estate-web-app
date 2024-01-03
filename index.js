@@ -272,7 +272,7 @@ app.post("/marketing/nekretnine", (req, res) => {
                     statistike.push({
                         id: id,
                         pretrage: 1,
-                        klikovi: 1
+                        klikovi: 0
                     })
                 } else {
                     statistika.pretrage += 1
@@ -302,7 +302,7 @@ app.post("/marketing/nekretnina/:id", (req, res) => {
                 statistike.push({
                     id: id,
                     pretrage: 1,
-                    klikovi: 1
+                    klikovi: 0
                 })
             } else {
                 statistika.klikovi += 1
@@ -346,7 +346,7 @@ app.post("/marketing/osvjezi", (req, res) => {
                     result.push({
                         id: id,
                         pretrage: 1,
-                        klikovi: 1
+                        klikovi: 0
                     })
                 } else {
                     result.push(statistika)
