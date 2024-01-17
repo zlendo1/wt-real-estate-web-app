@@ -31,7 +31,109 @@ const data = (() => {
     }
 })()
 
+const Sequelize = require("sequelize")
+const sequelize = new Sequelize("wt24", "root", "password", {
+    host: "localhost",
+    dialect: "mysql",
+    logging: false
+})
+
+const korisnik = sequelize.define("korisnik", {
+    id: {
+        type: Sequelize.INTEGER,
+        autoIncrement: true,
+        primaryKey: true
+    },
+    ime: {
+        type: Sequelize.STRING,
+        allowNull: false
+    },
+    prezime: {
+        type: Sequelize.STRING,
+        allowNull: false
+    },
+    username: {
+        type: Sequelize.STRING,
+        allowNull: false,
+        unique: true,
+        validate: {
+            is: /^[a-zA-Z0-9_]+$/
+        }
+    },
+    password: {
+        type: Sequelize.STRING,
+        allowNull: false
+    }
+})
+
+const nekretnina = sequelize.define("nekretnina", {
+    id: {
+        type: Sequelize.INTEGER,
+        autoIncrement: true,
+        primaryKey: true
+    },
+    tip_nekretnine: {
+        type: Sequelize.STRING,
+        allowNull: false
+    },
+    naziv: {
+        type: Sequelize.STRING,
+        allowNull: false
+    },
+    kvadratura: {
+        type: Sequelize.INTEGER,
+        allowNull: false
+    },
+    cijena: {
+        type: Sequelize.FLOAT,
+        allowNull: false
+    },
+    tip_grijanja: {
+        type: Sequelize.STRING,
+        allowNull: false
+    },
+    lokacija: {
+        type: Sequelize.STRING,
+        allowNull: false
+    },
+    godina_izgradnje: {
+        type: Sequelize.INTEGER,
+        allowNull: false
+    },
+    datum_objave: {
+        type: Sequelize.STRING,
+        allowNull: false
+    },
+    opis: {
+        type: Sequelize.STRING,
+        allowNull: false
+    }
+})
+
+const upit = sequelize.define("upit", {
+    id: {
+        type: Sequelize.INTEGER,
+        autoIncrement: true,
+        primaryKey: true
+    },
+    tekst_upita: {
+        type: Sequelize.STRING,
+        allowNull: false
+    }
+})
+
+nekretnina.hasMany(upit, {
+    foreignKey: "nekretnina_id"
+})
+
+korisnik.hasMany(upit, {
+    foreignKey: "korisnik_id"
+})
+
+sequelize.sync()
+
 // Routes
+// TODO: Implement sequelize in these routes
 app.post('/login', (req, res) => {
     if (req.session.user) {
         res.status(403).send(
@@ -127,6 +229,7 @@ app.get("/korisnik", (req, res) => {
     )
 })
 
+// TODO: Upiti will be moved from nekretnine to a seperate table, this has to be modified
 app.post("/upit", (req, res) => {
     if (!req.session.user) {
         res.status(401).send(
