@@ -127,12 +127,28 @@ export const dao = (() => {
         return table.findByPk(id)
     }
 
+    function getAll(table) {
+        return table.findAll()
+    }
+
     function getKorisnikImpl(id) {
         return getById(korisnik, id)
     }
 
+    function getKorisnikByUsernameImpl(username) {
+        return korisnik.findOne({
+            where: {
+                username: username
+            }
+        })
+    }
+
     function getNekretninaImpl(id) {
         return getById(nekretnina, id)
+    }
+
+    function getAllNekretninaImpl() {
+        return getAll(nekretnina)
     }
 
     function getUpitImpl(id) {
@@ -189,7 +205,9 @@ export const dao = (() => {
     return {
         sync: syncImpl,
         getKorisnik: getKorisnikImpl,
+        getKorisnikByUsername: getKorisnikByUsernameImpl,
         getNekretnina: getNekretninaImpl,
+        getAllNekretnina: getAllNekretninaImpl,
         getUpit: getUpitImpl,
         getMarketing: getMarketingImpl,
         createKorisnik: createKorisnikImpl,
