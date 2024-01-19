@@ -107,11 +107,13 @@ export const dao = (() => {
         },
         pretrage: {
             type: Sequelize.INTEGER,
-            allowNull: false
+            allowNull: false,
+            defaultValue: 0
         },
         klikovi: {
             type: Sequelize.INTEGER,
-            allowNull: false
+            allowNull: false,
+            defaultValue: 0
         }
     })
 
@@ -157,6 +159,26 @@ export const dao = (() => {
 
     function getMarketingImpl(id) {
         return getById(marketing, id)
+    }
+
+    function getMarketingByNekretninaIdsImpl(ids) {
+        return ids.map(async id => {
+            const [instance, created] = await marketing.findOrCreate({
+                where: {
+                    nekretnina_id: id
+                }
+            })
+
+            return instance
+        })
+    }
+
+    function getMarketingByNekretninaIdImpl(id) {
+        return marketing.findOrCreate({
+            where: {
+                nekretnina_id: id
+            }
+        })
     }
 
     function create(table, values) {
@@ -210,6 +232,8 @@ export const dao = (() => {
         getAllNekretnina: getAllNekretninaImpl,
         getUpit: getUpitImpl,
         getMarketing: getMarketingImpl,
+        getMarketingByMarketingIds: getMarketingByNekretninaIdsImpl,
+        getMarketingByNekretninaId: getMarketingByNekretninaIdImpl,
         createKorisnik: createKorisnikImpl,
         createNekretnina: createNekretninaImpl,
         createUpit: createUpitImpl,
