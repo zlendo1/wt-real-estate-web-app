@@ -14,126 +14,11 @@ app.use(session({
 
 const bcrypt = require("bcrypt")
 
-const fs = require("fs-extra")
+import { dao } from "./dao/dao.js"
 
-const data = (() => {
-    function impl_read(fileName) {
-        return fs.readJson(`./data/${fileName}.json`)
-    }
-
-    function impl_write(fileName, content) {
-        return fs.writeJson(`./data/${fileName}.json`, content)
-    }
-
-    return {
-        read: impl_read,
-        write: impl_write
-    }
-})()
-
-const Sequelize = require("sequelize")
-const sequelize = new Sequelize("wt24", "root", "password", {
-    host: "localhost",
-    dialect: "mysql",
-    logging: false
-})
-
-const korisnik = sequelize.define("korisnik", {
-    id: {
-        type: Sequelize.INTEGER,
-        autoIncrement: true,
-        primaryKey: true
-    },
-    ime: {
-        type: Sequelize.STRING,
-        allowNull: false
-    },
-    prezime: {
-        type: Sequelize.STRING,
-        allowNull: false
-    },
-    username: {
-        type: Sequelize.STRING,
-        allowNull: false,
-        unique: true,
-        validate: {
-            is: /^[a-zA-Z0-9_]+$/
-        }
-    },
-    password: {
-        type: Sequelize.STRING,
-        allowNull: false
-    }
-})
-
-const nekretnina = sequelize.define("nekretnina", {
-    id: {
-        type: Sequelize.INTEGER,
-        autoIncrement: true,
-        primaryKey: true
-    },
-    tip_nekretnine: {
-        type: Sequelize.STRING,
-        allowNull: false
-    },
-    naziv: {
-        type: Sequelize.STRING,
-        allowNull: false
-    },
-    kvadratura: {
-        type: Sequelize.INTEGER,
-        allowNull: false
-    },
-    cijena: {
-        type: Sequelize.FLOAT,
-        allowNull: false
-    },
-    tip_grijanja: {
-        type: Sequelize.STRING,
-        allowNull: false
-    },
-    lokacija: {
-        type: Sequelize.STRING,
-        allowNull: false
-    },
-    godina_izgradnje: {
-        type: Sequelize.INTEGER,
-        allowNull: false
-    },
-    datum_objave: {
-        type: Sequelize.STRING,
-        allowNull: false
-    },
-    opis: {
-        type: Sequelize.STRING,
-        allowNull: false
-    }
-})
-
-const upit = sequelize.define("upit", {
-    id: {
-        type: Sequelize.INTEGER,
-        autoIncrement: true,
-        primaryKey: true
-    },
-    tekst_upita: {
-        type: Sequelize.STRING,
-        allowNull: false
-    }
-})
-
-nekretnina.hasMany(upit, {
-    foreignKey: "nekretnina_id"
-})
-
-korisnik.hasMany(upit, {
-    foreignKey: "korisnik_id"
-})
-
-sequelize.sync()
+await dao.sync()
 
 // Routes
-// TODO: Implement sequelize in these routes
 app.post('/login', (req, res) => {
     if (req.session.user) {
         res.status(403).send(
@@ -148,11 +33,9 @@ app.post('/login', (req, res) => {
     const bodyUsername = requestBody["username"]
     const bodyPassword = requestBody["password"]
 
-    data.read("korisnici")
-        .then(korisnici => {
-            const user = korisnici.find(korisnik => korisnik.username === bodyUsername)
-
-            if (!user) {
+    dao.getKorisnikByUsername(bodyUsername)
+        .then(korisnik => {
+            if (!korisnik) {
                 res.status(401).send(
                     {greska: "Neuspješna prijava"}
                 )
@@ -160,7 +43,7 @@ app.post('/login', (req, res) => {
                 return
             }
 
-            bcrypt.compare(bodyPassword, user.password, (err, result) => {
+            bcrypt.compare(bodyPassword, korisnik.password, (err, result) => {
                 if (err) {
                     res.status(500).send(
                         {greska: "Greška u provjeri lozinke"}
@@ -177,7 +60,7 @@ app.post('/login', (req, res) => {
                     return
                 }
 
-                req.session.user = user
+                req.session.user = korisnik.toJSON()
 
                 res.status(200).send(
                     {poruka: "Uspješna prijava"}
@@ -229,7 +112,6 @@ app.get("/korisnik", (req, res) => {
     )
 })
 
-// TODO: Upiti will be moved from nekretnine to a seperate table, this has to be modified
 app.post("/upit", (req, res) => {
     if (!req.session.user) {
         res.status(401).send(
@@ -244,10 +126,8 @@ app.post("/upit", (req, res) => {
     const nekretnina_id = requestBody["nekretnina_id"]
     const tekstUpita = requestBody["tekst_upita"]
 
-    data.read("nekretnine")
-        .then(nekretnine => {
-            let nekretnina = nekretnine.find(nekretnina => nekretnina.id === nekretnina_id)
-
+    dao.getNekretnina(nekretnina_id)
+        .then(nekretnina => {
             if (!nekretnina) {
                 res.status(400).send(
                     {greska: `Nekretnina sa id-em ${nekretnina_id} ne postoji`}
@@ -256,19 +136,20 @@ app.post("/upit", (req, res) => {
                 return
             }
 
-            nekretnina.upiti.push({
+            const upit = dao.createUpit({
+                tekst_upita: tekstUpita,
                 korisnik_id: req.session.user.id,
-                tekst_upita: tekstUpita
+                nekretnina_id: nekretnina_id
             })
 
-            return data.write("nekretnine", nekretnine)
+            return upit.save()
         })
         .catch(err => {
             res.status(500).send(
                 {greska: err.message}
             )
         })
-        .then(() => {
+        .then(_ => {
             res.status(200).send(
                 {poruka: "Upit je uspješno dodan"}
             )
@@ -291,10 +172,8 @@ app.put("/korisnik", (req, res) => {
     const bodyUsername = requestBody["username"]
     const bodyPassword = requestBody["password"]
 
-    data.read("korisnici")
-        .then(korisnici => {
-            let matchingUser = korisnici.find(korisnik => korisnik.id === req.session.user.id)
-
+    dao.getKorisnik(req.session.user.id)
+        .then(matchingUser => {
             if (!matchingUser) {
                 res.status(500).send(
                     {greska: `Session user ne postoji u bazi`}
@@ -333,7 +212,7 @@ app.put("/korisnik", (req, res) => {
                 })
             }
 
-            return data.write("korisnici", korisnici)
+            return matchingUser.save()
         })
         .catch(err => {
             res.status(500).send(
@@ -348,10 +227,10 @@ app.put("/korisnik", (req, res) => {
 })
 
 app.get("/nekretnine", (req, res) => {
-    data.read("nekretnine")
+    dao.getAllNekretnina()
         .then(nekretnine => {
             res.status(200).send(
-                nekretnine
+                nekretnine.toJSON()
             )
         })
         .catch(err => {
@@ -366,30 +245,20 @@ app.post("/marketing/nekretnine", (req, res) => {
 
     const idNekretnina = requestBody["nizNekretnina"]
 
-    data.read("marketing")
+    dao.getMarketingByMarketingIds(idNekretnina)
         .then(statistike => {
-            for (let id of idNekretnina) {
-                let statistika = statistike.find(statistika => statistika.id === id)
-
-                if (!statistika) {
-                    statistike.push({
-                        id: id,
-                        pretrage: 1,
-                        klikovi: 0
-                    })
-                } else {
-                    statistika.pretrage += 1
-                }
+            for (let statistika of statistike) {
+                statistika.pretrage += 1
             }
 
-            return data.write("marketing", statistike)
+            return statistike.save()
         })
         .catch(err => {
             res.status(500).send(
                 {greska: err.message}
             )
         })
-        .then(() => {
+        .then(_ => {
             res.status(200).send()
         })
 })
@@ -397,28 +266,18 @@ app.post("/marketing/nekretnine", (req, res) => {
 app.post("/marketing/nekretnina/:id", (req, res) => {
     const id = parseInt(req.params.id)
 
-    data.read("marketing")
-        .then(statistike => {
-            let statistika = statistike.find(statistika => statistika.id === id)
+    dao.getMarketingByNekretninaId(id)
+        .then(statistika => {
+            statistika.klikovi += 1
 
-            if (!statistika) {
-                statistike.push({
-                    id: id,
-                    pretrage: 1,
-                    klikovi: 0
-                })
-            } else {
-                statistika.klikovi += 1
-            }
-
-            return data.write("marketing", statistike)
+            return statistika.save()
         })
         .catch(err => {
             res.status(500).send(
                 {greska: err.message}
             )
         })
-        .then(() => {
+        .then(_ => {
             res.status(200).send()
         })
 })
@@ -438,31 +297,24 @@ app.post("/marketing/osvjezi", (req, res) => {
 
     const idNekretnina = req.session.idStatistika
 
-    data.read("marketing")
+    dao.getMarketingByMarketingIds(idNekretnina)
         .then(statistike => {
-            let result = []
-
-            for (let id of idNekretnina) {
-                let statistika = statistike.find(statistika => statistika.id === id)
-
-                if (!statistika) {
-                    result.push({
-                        id: id,
-                        pretrage: 1,
-                        klikovi: 0
-                    })
-                } else {
-                    result.push(statistika)
-                }
+            for (let statistika of statistike) {
+                statistika.pretrage += 1
             }
 
-            res.status(200).send(
-                result
-            )
+            return statistike.save()
         })
         .catch(err => {
             res.status(500).send(
                 {greska: err.message}
+            )
+        })
+        .then(statistike => {
+            let result = statistike.map(statistika => statistika.toJSON())
+
+            res.status(200).send(
+                result
             )
         })
 })
