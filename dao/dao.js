@@ -164,7 +164,7 @@ const dao = (() => {
     function impl_getMarketingByNekretninaIds(ids) {
         return new Promise((resolve, reject) => {
             const promises = ids.map(async id => {
-                const [instance, created] = await marketing.findOrCreate({
+                const [instance, _] = await marketing.findOrCreate({
                     where: {
                         nekretnina_id: id
                     }
@@ -252,6 +252,14 @@ const dao = (() => {
         })
     }
 
+    function impl_getUpitiByNekretninaId(id) {
+        return upit.findAll({
+            where: {
+                nekretnina_id: id
+            }
+        })
+    }
+
     return {
         sync: impl_sync,
         getKorisnik: impl_getKorisnik,
@@ -266,7 +274,8 @@ const dao = (() => {
         createNekretnina: impl_createNekretnina,
         createUpit: impl_createUpit,
         createMarketing: impl_createMarketing,
-        saveAll: impl_saveALl
+        saveAll: impl_saveALl,
+        getUpiti: impl_getUpitiByNekretninaId
     }
 })()
 

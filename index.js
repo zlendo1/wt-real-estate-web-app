@@ -112,6 +112,24 @@ app.get("/korisnik", (req, res) => {
     )
 })
 
+app.get("/upiti/:id", (req, res) => {
+    const id = parseInt(req.params.id)
+
+    dao.getUpiti(id)
+        .then(upiti => {
+            const upitiJSON = upiti.map(upit => upit.toJSON())
+
+            res.status(200).send(
+                upitiJSON
+            )
+        })
+        .catch(err => {
+            res.status(500).send(
+                {greska: err.message}
+            )
+        })
+})
+
 app.post("/upit", (req, res) => {
     if (!req.session.user) {
         res.status(401).send(
