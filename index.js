@@ -14,9 +14,9 @@ app.use(session({
 
 const bcrypt = require("bcrypt")
 
-import { dao } from "./dao/dao.js"
+const dao = require("./dao/dao")
 
-await dao.sync()
+dao.sync()
 
 // Routes
 app.post('/login', (req, res) => {
