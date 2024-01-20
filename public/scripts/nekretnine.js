@@ -50,7 +50,7 @@ function spojiNekretnine(divReferenca, instancaModula, tip_nekretnine, kriterij 
         const otvoriDetaljeButton = document.createElement("button")
 
         otvoriDetaljeButton.classList.add("otvoriDetaljeButton")
-        otvoriDetaljeButton.hidden = true
+        otvoriDetaljeButton.classList.add("hidden")
         otvoriDetaljeButton.innerText = "Otvori detalje"
 
         otvoriDetaljeButton.addEventListener('click', (event) => {

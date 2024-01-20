@@ -54,7 +54,12 @@ const MarketingAjax = (() => {
 
             const setHideOnOtvoriDetalji = (toHide) => {
                 const otvoriDetaljeButton = divExpandedFrame.getElementsByClassName("otvoriDetaljeButton")[0]
-                otvoriDetaljeButton.hidden = toHide
+
+                if (toHide) {
+                    otvoriDetaljeButton.classList.add("hidden")
+                } else {
+                    otvoriDetaljeButton.classList.remove("hidden")
+                }
             }
 
             if (divExpandedFrame) {

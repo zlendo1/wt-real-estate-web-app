@@ -25,3 +25,7 @@ html {
 .alignRight {
     text-align: right;
 }
+
+.hidden {
+    display: none;
+}
