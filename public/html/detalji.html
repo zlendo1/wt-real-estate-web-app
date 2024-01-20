@@ -6,23 +6,23 @@
     <link rel="stylesheet" href="../css/app_common.css">
     <link rel="stylesheet" href="../css/detalji.css">
 </head>
-<body>
+<body onload="load()">
     <div id="meni"></div>
     <div id="osnovno">
         <h3>Osnovno</h3>
-        <img id="icon" src="../res/apartments.png" alt="building">
-        <p id="naziv"><b>Naziv:</b> Apartman</p>
-        <p id="kvadratura"><b>Kvadratura:</b> 25 m^3</p>
-        <p id="cijena"><b>Cijena:</b> 10000 KM</p>
+        <img id="icon" src="" alt="building">
+        <p id="naziv"><b>Naziv:</b></p>
+        <p id="kvadratura"><b>Kvadratura:</b></p>
+        <p id="cijena"><b>Cijena:</b></p>
     </div>
     <div id="detalji">
         <h3>Detalji</h3>
         <div id="detalji_list">
-            <p><b>Tip grijanja:</b> gas</p>
-            <p><b>Lokacija:</b> Novi Grad</p>
-            <p><b>Godina izgradnje:</b> 2019</p>
-            <p><b>Datum objave oglasa:</b> 1.1.2020</p>
-            <div id="opis_field"><p><b>Opis:</b> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Inventore, obcaecati ullam? Accusantium aliquid cupiditate doloribus exercitationem expedita laboriosam, laborum nam numquam quas quasi, quo sunt unde voluptas? Aspernatur, dolorum, fugiat.</p></div>
+            <p id="tipGrijanja"><b>Tip grijanja:</b></p>
+            <p id="lokacija"><b>Lokacija:</b></p>
+            <p id="godinaIzgradnje"><b>Godina izgradnje:</b></p>
+            <p id="datumObjave"><b>Datum objave oglasa:</b></p>
+            <div id="opis_field"><p id="opis"><b>Opis:</b></p></div>
         </div>
     </div>
     <div id="upit">
@@ -40,5 +40,6 @@
     </div>
     <script src="../scripts/PozoviAjax.js"></script>
     <script src="../scripts/meni.js"></script>
+    <script src="../scripts/detalji.js"></script>
 </body>
 </html>
