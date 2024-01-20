@@ -47,6 +47,18 @@ function spojiNekretnine(divReferenca, instancaModula, tip_nekretnine, kriterij 
 
         itemFrame.appendChild(button)
 
+        const otvoriDetaljeButton = document.createElement("button")
+
+        otvoriDetaljeButton.classList.add("otvoriDetaljeButton")
+        otvoriDetaljeButton.hidden = true
+        button.innerText = "Otvori detalje"
+
+        otvoriDetaljeButton.addEventListener('click', (event) => {
+            // TODO: Implement transition on click
+        })
+
+        itemFrame.appendChild(otvoriDetaljeButton)
+
         itemList.appendChild(itemFrame)
     })
 
