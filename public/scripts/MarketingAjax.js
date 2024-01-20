@@ -116,7 +116,7 @@ const MarketingAjax = (() => {
         _osvjezi("klikovi", divNekretnine)
     }
 
-    function osvjeziImpl(divNekretnine) {
+    function impl_osvjezi(divNekretnine) {
         const fnCallback = (err, data) => {
             if (err) {
                 return
@@ -159,6 +159,6 @@ const MarketingAjax = (() => {
         klikNekretnina: impl_klikNekretnina,
         osvjeziPretrage: impl_osvjeziPretrage,
         osvjeziKlikove: impl_osvjeziKlikove,
-        osvjezi: osvjeziImpl
+        osvjezi: impl_osvjezi
     }
 })()
