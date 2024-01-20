@@ -163,21 +163,23 @@ const dao = (() => {
 
     function impl_getMarketingByNekretninaIds(ids) {
         return new Promise((resolve, reject) => {
-            try {
-                const statistike = ids.map(async id => {
-                    const [instance, created] = await marketing.findOrCreate({
-                        where: {
-                            nekretnina_id: id
-                        }
-                    })
-
-                    return instance
+            const promises = ids.map(async id => {
+                const [instance, created] = await marketing.findOrCreate({
+                    where: {
+                        nekretnina_id: id
+                    }
                 })
 
-                resolve(statistike)
-            } catch (e) {
-                reject(e)
-            }
+                return instance
+            })
+
+            Promise.all(promises)
+                .then(statistike => {
+                    resolve(statistike)
+                })
+                .catch(err => {
+                    reject(err)
+                })
         })
     }
 
