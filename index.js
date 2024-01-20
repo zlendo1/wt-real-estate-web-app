@@ -229,8 +229,10 @@ app.put("/korisnik", (req, res) => {
 app.get("/nekretnine", (req, res) => {
     dao.getAllNekretnina()
         .then(nekretnine => {
+            const nekretnineJSON = nekretnine.map(nekretnina => nekretnina.toJSON())
+
             res.status(200).send(
-                nekretnine.toJSON()
+                nekretnineJSON
             )
         })
         .catch(err => {
@@ -245,13 +247,13 @@ app.post("/marketing/nekretnine", (req, res) => {
 
     const idNekretnina = requestBody["nizNekretnina"]
 
-    dao.getMarketingByMarketingIds(idNekretnina)
+    dao.getMarketingByNekretninaIds(idNekretnina)
         .then(statistike => {
             for (let statistika of statistike) {
                 statistika.pretrage += 1
             }
 
-            return statistike.save()
+            return dao.saveAll(statistike)
         })
         .catch(err => {
             res.status(500).send(
@@ -297,13 +299,13 @@ app.post("/marketing/osvjezi", (req, res) => {
 
     const idNekretnina = req.session.idStatistika
 
-    dao.getMarketingByMarketingIds(idNekretnina)
+    dao.getMarketingByNekretninaIds(idNekretnina)
         .then(statistike => {
             for (let statistika of statistike) {
                 statistika.pretrage += 1
             }
 
-            return statistike.save()
+            return dao.saveAll(statistike)
         })
         .catch(err => {
             res.status(500).send(

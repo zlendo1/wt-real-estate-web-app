@@ -162,14 +162,22 @@ const dao = (() => {
     }
 
     function getMarketingByNekretninaIdsImpl(ids) {
-        return ids.map(async id => {
-            const [instance, created] = await marketing.findOrCreate({
-                where: {
-                    nekretnina_id: id
-                }
-            })
+        return new Promise((resolve, reject) => {
+            try {
+                const statistike = ids.map(async id => {
+                    const [instance, created] = await marketing.findOrCreate({
+                        where: {
+                            nekretnina_id: id
+                        }
+                    })
 
-            return instance
+                    return instance
+                })
+
+                resolve(statistike)
+            } catch (e) {
+                reject(e)
+            }
         })
     }
 
@@ -224,6 +232,24 @@ const dao = (() => {
         })
     }
 
+    function impl_saveALl(models) {
+        return new Promise((resolve, reject) => {
+            try {
+                const promises = models.map(model => model.save())
+
+                Promise.all(promises)
+                    .then(results => {
+                        resolve(results)
+                    })
+                    .catch(err => {
+                        reject(err)
+                    })
+            } catch (e) {
+                reject(e)
+            }
+        })
+    }
+
     return {
         sync: syncImpl,
         getKorisnik: getKorisnikImpl,
@@ -232,12 +258,13 @@ const dao = (() => {
         getAllNekretnina: getAllNekretninaImpl,
         getUpit: getUpitImpl,
         getMarketing: getMarketingImpl,
-        getMarketingByMarketingIds: getMarketingByNekretninaIdsImpl,
+        getMarketingByNekretninaIds: getMarketingByNekretninaIdsImpl,
         getMarketingByNekretninaId: getMarketingByNekretninaIdImpl,
         createKorisnik: createKorisnikImpl,
         createNekretnina: createNekretninaImpl,
         createUpit: createUpitImpl,
-        createMarketing: createMarketingImpl
+        createMarketing: createMarketingImpl,
+        saveAll: impl_saveALl
     }
 })()
 
