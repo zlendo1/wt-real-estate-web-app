@@ -307,16 +307,16 @@ app.post("/marketing/osvjezi", (req, res) => {
 
             return dao.saveAll(statistike)
         })
-        .catch(err => {
-            res.status(500).send(
-                {greska: err.message}
-            )
-        })
         .then(statistike => {
             let result = statistike.map(statistika => statistika.toJSON())
 
             res.status(200).send(
                 result
+            )
+        })
+        .catch(err => {
+            res.status(500).send(
+                {greska: err.message}
             )
         })
 })
