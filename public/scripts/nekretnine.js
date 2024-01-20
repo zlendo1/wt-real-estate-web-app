@@ -54,7 +54,7 @@ function spojiNekretnine(divReferenca, instancaModula, tip_nekretnine, kriterij 
         button.innerText = "Otvori detalje"
 
         otvoriDetaljeButton.addEventListener('click', (event) => {
-            // TODO: Implement transition on click
+            window.location.href = `http://localhost:3000/detalji?id=${item.id}`
         })
 
         itemFrame.appendChild(otvoriDetaljeButton)
