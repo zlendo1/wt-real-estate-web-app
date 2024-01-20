@@ -125,8 +125,8 @@ const MarketingAjax = (() => {
             calledFilter = false
 
             for (let statistika of data) {
-                const divPretrage = document.getElementById(`pretrage-${statistika.id}`)
-                const divKlikovi = document.getElementById(`klikovi-${statistika.id}`)
+                const divPretrage = document.getElementById(`pretrage-${statistika.nekretnina_id}`)
+                const divKlikovi = document.getElementById(`klikovi-${statistika.nekretnina_id}`)
 
                 divPretrage.innerHTML = statistika.pretrage
                 divKlikovi.innerHTML = statistika.klikovi
