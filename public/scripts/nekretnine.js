@@ -51,7 +51,7 @@ function spojiNekretnine(divReferenca, instancaModula, tip_nekretnine, kriterij 
 
         otvoriDetaljeButton.classList.add("otvoriDetaljeButton")
         otvoriDetaljeButton.hidden = true
-        button.innerText = "Otvori detalje"
+        otvoriDetaljeButton.innerText = "Otvori detalje"
 
         otvoriDetaljeButton.addEventListener('click', (event) => {
             window.location.href = `http://localhost:3000/detalji?id=${item.id}`
