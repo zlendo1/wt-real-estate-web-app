@@ -121,7 +121,7 @@ const dao = (() => {
         foreignKey: "nekretnina_id"
     })
 
-    function syncImpl() {
+    function impl_sync() {
         sequelize.sync()
     }
 
@@ -133,11 +133,11 @@ const dao = (() => {
         return table.findAll()
     }
 
-    function getKorisnikImpl(id) {
+    function impl_getKorisnik(id) {
         return getById(korisnik, id)
     }
 
-    function getKorisnikByUsernameImpl(username) {
+    function impl_getKorisnikByUsername(username) {
         return korisnik.findOne({
             where: {
                 username: username
@@ -145,23 +145,23 @@ const dao = (() => {
         })
     }
 
-    function getNekretninaImpl(id) {
+    function impl_getNekretnina(id) {
         return getById(nekretnina, id)
     }
 
-    function getAllNekretninaImpl() {
+    function impl_getAllNekretnina() {
         return getAll(nekretnina)
     }
 
-    function getUpitImpl(id) {
+    function impl_getUpit(id) {
         return getById(upit, id)
     }
 
-    function getMarketingImpl(id) {
+    function impl_getMarketing(id) {
         return getById(marketing, id)
     }
 
-    function getMarketingByNekretninaIdsImpl(ids) {
+    function impl_getMarketingByNekretninaIds(ids) {
         return new Promise((resolve, reject) => {
             try {
                 const statistike = ids.map(async id => {
@@ -181,7 +181,7 @@ const dao = (() => {
         })
     }
 
-    function getMarketingByNekretninaIdImpl(id) {
+    function impl_getMarketingByNekretninaId(id) {
         return marketing.findOrCreate({
             where: {
                 nekretnina_id: id
@@ -193,7 +193,7 @@ const dao = (() => {
         return table.create(values)
     }
 
-    function createKorisnikImpl(ime, prezime, username, password) {
+    function impl_createKorisnik(ime, prezime, username, password) {
         return create(korisnik, {
             ime: ime,
             prezime: prezime,
@@ -202,7 +202,7 @@ const dao = (() => {
         })
     }
 
-    function createNekretninaImpl(tip_nekretnine, naziv, kvadratura, cijena, tip_grijanja, lokacija, godina_izgradnje, datum_objave, opis) {
+    function impl_createNekretnina(tip_nekretnine, naziv, kvadratura, cijena, tip_grijanja, lokacija, godina_izgradnje, datum_objave, opis) {
         return create(nekretnina, {
             tip_nekretnine: tip_nekretnine,
             naziv: naziv,
@@ -216,7 +216,7 @@ const dao = (() => {
         })
     }
 
-    function createUpitImpl(korisnik_id, nekretnina_id, tekst_upita) {
+    function impl_createUpit(korisnik_id, nekretnina_id, tekst_upita) {
         return create(upit, {
             korisnik_id: korisnik_id,
             nekretnina_id: nekretnina_id,
@@ -224,7 +224,7 @@ const dao = (() => {
         })
     }
 
-    function createMarketingImpl(nekretnina_id, pretrage, klikovi) {
+    function impl_createMarketing(nekretnina_id, pretrage, klikovi) {
         return create(marketing, {
             nekretnina_id: nekretnina_id,
             pretrage: pretrage,
@@ -251,19 +251,19 @@ const dao = (() => {
     }
 
     return {
-        sync: syncImpl,
-        getKorisnik: getKorisnikImpl,
-        getKorisnikByUsername: getKorisnikByUsernameImpl,
-        getNekretnina: getNekretninaImpl,
-        getAllNekretnina: getAllNekretninaImpl,
-        getUpit: getUpitImpl,
-        getMarketing: getMarketingImpl,
-        getMarketingByNekretninaIds: getMarketingByNekretninaIdsImpl,
-        getMarketingByNekretninaId: getMarketingByNekretninaIdImpl,
-        createKorisnik: createKorisnikImpl,
-        createNekretnina: createNekretninaImpl,
-        createUpit: createUpitImpl,
-        createMarketing: createMarketingImpl,
+        sync: impl_sync,
+        getKorisnik: impl_getKorisnik,
+        getKorisnikByUsername: impl_getKorisnikByUsername,
+        getNekretnina: impl_getNekretnina,
+        getAllNekretnina: impl_getAllNekretnina,
+        getUpit: impl_getUpit,
+        getMarketing: impl_getMarketing,
+        getMarketingByNekretninaIds: impl_getMarketingByNekretninaIds,
+        getMarketingByNekretninaId: impl_getMarketingByNekretninaId,
+        createKorisnik: impl_createKorisnik,
+        createNekretnina: impl_createNekretnina,
+        createUpit: impl_createUpit,
+        createMarketing: impl_createMarketing,
         saveAll: impl_saveALl
     }
 })()
