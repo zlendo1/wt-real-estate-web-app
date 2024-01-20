@@ -321,6 +321,30 @@ app.post("/marketing/osvjezi", (req, res) => {
         })
 })
 
+app.get("/nekretnina/:id", (req, res) => {
+    const id = parseInt(req.params.id)
+
+    dao.getNekretnina(id)
+        .then(nekretnina => {
+            if (!nekretnina) {
+                res.status(400).send(
+                    {greska: `Nekretnina sa id-em ${id} ne postoji`}
+                )
+
+                return
+            }
+
+            res.status(200).send(
+                nekretnina.toJSON()
+            )
+        })
+        .catch(err => {
+            res.status(500).send(
+                {greska: err.message}
+            )
+        })
+})
+
 app.get("/", (req, res) => {
     res.sendFile( `${__dirname}/public/html/nekretnine.html`)
 })
