@@ -349,7 +349,7 @@ app.get("/", (req, res) => {
     res.sendFile( `${__dirname}/public/html/nekretnine.html`)
 })
 
-app.get("/detalji", (req, res) => {
+app.get("/detalji/:id", (req, res) => {
     res.sendFile( `${__dirname}/public/html/detalji.html`)
 })
 
