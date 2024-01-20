@@ -7,25 +7,23 @@ img {
     margin: 0 auto;
 }
 
-#li-opis {
+#opis_field {
     grid-column: span 2;
 }
 
-#detalji ul {
-    list-style: none;
+#detalji_list {
     display: grid;
     grid-gap: 16px;
     grid-template-columns: repeat(2, 1fr);
 }
 
-#upit ul {
-    list-style: none;
+#upit_list {
     display: grid;
     grid-gap: 16px;
     grid-template-columns: 1fr;
 }
 
-#upit li {
+#upit_list div {
     background-color: white;
     border: 1px solid black;
     padding: 10px;
