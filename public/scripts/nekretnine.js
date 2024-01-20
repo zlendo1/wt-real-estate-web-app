@@ -41,7 +41,7 @@ function spojiNekretnine(divReferenca, instancaModula, tip_nekretnine, kriterij 
         button.id = `detalji-${item.id}`
         button.innerText = "Detalji"
 
-        button.addEventListener('click', (event) => {
+        button.addEventListener('click', (_) => {
             MarketingAjax.klikNekretnina(item.id)
         })
 
@@ -53,7 +53,7 @@ function spojiNekretnine(divReferenca, instancaModula, tip_nekretnine, kriterij 
         otvoriDetaljeButton.classList.add("hidden")
         otvoriDetaljeButton.innerText = "Otvori detalje"
 
-        otvoriDetaljeButton.addEventListener('click', (event) => {
+        otvoriDetaljeButton.addEventListener('click', (_) => {
             window.location.href = `http://localhost:3000/detalji/${item.id}`
         })
 

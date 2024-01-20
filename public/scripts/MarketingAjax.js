@@ -34,7 +34,7 @@ const MarketingAjax = (() => {
     function impl_novoFiltriranje(listaFiltriranihNekretnina) {
         const idNekretnina = listaFiltriranihNekretnina.map(nekretnina => nekretnina.id)
 
-        function fnCallback(err, data) {
+        function fnCallback(err, _) {
             if (err) {
                 throw new Error(`This literally wasn't supposed to happen: ${err}`)
             }
@@ -47,7 +47,7 @@ const MarketingAjax = (() => {
     }
 
     function impl_klikNekretnina(idNekretnine) {
-        function fnCallback(err, data) {
+        function fnCallback(err, _) {
             if (err) {
                 throw new Error(`This literally wasn't supposed to happen: ${err}`)
             }
