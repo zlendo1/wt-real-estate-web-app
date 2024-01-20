@@ -88,8 +88,7 @@ PozoviAjax.getNekretnine((err, listaNekretnina) => {
     const divNekretnine = document.getElementById("nekretnine_container")
 
     const updateStats = () => {
-        MarketingAjax.osvjeziPretrage(divNekretnine)
-        MarketingAjax.osvjeziKlikove(divNekretnine)
+        MarketingAjax.osvjezi(divNekretnine)
     }
 
     setInterval(updateStats, 500)

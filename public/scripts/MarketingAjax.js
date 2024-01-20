@@ -64,6 +64,7 @@ const MarketingAjax = (() => {
         callAjax("POST", `/nekretnina/${idNekretnine}`, fnCallback)
     }
 
+    // Deprecated code
     function _osvjezi(className, divNekretnine) {
         const fnCallback = (err, data) => {
             if (err) {
@@ -107,10 +108,49 @@ const MarketingAjax = (() => {
         _osvjezi("klikovi", divNekretnine)
     }
 
+    function osvjeziImpl(divNekretnine) {
+        const fnCallback = (err, data) => {
+            if (err) {
+                return
+            }
+
+            calledFilter = false
+
+            for (let statistika of data) {
+                const divPretrage = document.getElementById(`pretrage-${statistika.id}`)
+                const divKlikovi = document.getElementById(`klikovi-${statistika.id}`)
+
+                divPretrage.innerHTML = statistika.pretrage
+                divKlikovi.innerHTML = statistika.klikovi
+
+                divPretrage.hidden = false
+                divKlikovi.hidden = false
+            }
+        }
+
+        const extractInt = (str) => {
+            const numberRegex = /\d+/
+
+            return parseInt(str.match(numberRegex)[0])
+        }
+
+        const getIdNekretnine = () => {
+            const divCollection = divNekretnine.getElementsByClassName("pretrage")
+
+            return Array.from(divCollection).map(div => extractInt(div.id))
+        }
+
+        const detaljiId = !divExpandedFrame ? null : extractInt(divExpandedFrame.getElementsByClassName("detaljiButton")[0].id)
+
+        callAjax("POST", `/osvjezi`, fnCallback,
+            !calledFilter ? null : { nizNekretnina: detaljiId ? [detaljiId] : getIdNekretnine() })
+    }
+
     return {
         novoFiltriranje: impl_novoFiltriranje,
         klikNekretnina: impl_klikNekretnina,
         osvjeziPretrage: impl_osvjeziPretrage,
-        osvjeziKlikove: impl_osvjeziKlikove
+        osvjeziKlikove: impl_osvjeziKlikove,
+        osvjezi: osvjeziImpl
     }
 })()
