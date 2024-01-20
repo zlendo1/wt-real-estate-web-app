@@ -34,7 +34,6 @@ const MarketingAjax = (() => {
     function impl_novoFiltriranje(listaFiltriranihNekretnina) {
         const idNekretnina = listaFiltriranihNekretnina.map(nekretnina => nekretnina.id)
 
-        // TODO: This callback is never called, find out why
         function fnCallback(err, data) {
             if (err) {
                 throw new Error(`This literally wasn't supposed to happen: ${err}`)
@@ -53,12 +52,21 @@ const MarketingAjax = (() => {
                 throw new Error(`This literally wasn't supposed to happen: ${err}`)
             }
 
+            const setHideOnOtvoriDetalji = (toHide) => {
+                const otvoriDetaljeButton = divExpandedFrame.getElementsByClassName("otvoriDetaljeButton")[0]
+                otvoriDetaljeButton.hidden = toHide
+            }
+
             if (divExpandedFrame) {
                 divExpandedFrame.classList.remove("expanded")
+
+                setHideOnOtvoriDetalji(true)
             }
 
             divExpandedFrame = document.getElementById(`detalji-${idNekretnine}`).parentElement
             divExpandedFrame.classList.add("expanded")
+
+            setHideOnOtvoriDetalji(false)
         }
 
         callAjax("POST", `/nekretnina/${idNekretnine}`, fnCallback)
