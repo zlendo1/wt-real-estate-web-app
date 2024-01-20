@@ -255,13 +255,13 @@ app.post("/marketing/nekretnine", (req, res) => {
 
             return dao.saveAll(statistike)
         })
+        .then(_ => {
+            res.status(200).send()
+        })
         .catch(err => {
             res.status(500).send(
                 {greska: err.message}
             )
-        })
-        .then(_ => {
-            res.status(200).send()
         })
 })
 
@@ -274,13 +274,13 @@ app.post("/marketing/nekretnina/:id", (req, res) => {
 
             return statistika.save()
         })
+        .then(_ => {
+            res.status(200).send()
+        })
         .catch(err => {
             res.status(500).send(
                 {greska: err.message}
             )
-        })
-        .then(_ => {
-            res.status(200).send()
         })
 })
 
@@ -301,17 +301,10 @@ app.post("/marketing/osvjezi", (req, res) => {
 
     dao.getMarketingByNekretninaIds(idNekretnina)
         .then(statistike => {
-            for (let statistika of statistike) {
-                statistika.pretrage += 1
-            }
-
-            return dao.saveAll(statistike)
-        })
-        .then(statistike => {
-            let result = statistike.map(statistika => statistika.toJSON())
+            let statistikeJSON = statistike.map(statistika => statistika.toJSON())
 
             res.status(200).send(
-                result
+                statistikeJSON
             )
         })
         .catch(err => {
