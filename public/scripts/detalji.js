@@ -34,5 +34,40 @@ function load() {
 
         const opis = document.getElementById("opis")
         opis.innerText += ` ${item.opis}`
+
+        PozoviAjax.getKorisnik((err, _) => {
+            if (!err) {
+                return
+            }
+
+            const upitForm = document.getElementById("upitForm")
+
+            upitForm.classList.add("hidden")
+        })
+
+        PozoviAjax.getUpiti(id, (_, upiti) => {
+            const upitiList = document.getElementById("upit_list")
+
+            for (const upit of upiti) {
+                PozoviAjax.getKorisnikById(upit.korisnik_id, (err, korisnik) => {
+                    if (err) {
+                        throw new Error("This should never happen!")
+                    }
+
+                    upitiList.appendChild(newUpit(korisnik.username, upit.tekst_upita))
+                })
+            }
+        })
     })
+}
+
+function newUpit(username, tekstUpita) {
+    const upitFrame = document.createElement("div")
+
+    upitFrame.innerHTML = `
+        <h6>${username}</h6>
+        <p>${tekstUpita}</p>
+    `
+
+    return upitFrame
 }
