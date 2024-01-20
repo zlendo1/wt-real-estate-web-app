@@ -22,7 +22,6 @@ function addMeni(loggedIn) {
 
     menuList.innerHTML += `
         <a href="http://localhost:3000">Nekretnine</a>
-        <a href="http://localhost:3000/detalji">Detalji</a>
     `
 
     if (loggedIn) {
