@@ -77,6 +77,10 @@ const PozoviAjax = (() => {
         callAjax("GET", `/upiti/${nekretnina_id}`, fnCallback)
     }
 
+    function impl_getKorisnikById(id, fnCallback) {
+        callAjax("GET", `/korisnik/${id}`, fnCallback)
+    }
+
     return {
         postLogin: impl_postLogin,
         postLogout: impl_postLogout,
@@ -85,6 +89,7 @@ const PozoviAjax = (() => {
         postUpit: impl_postUpit,
         getNekretnine: impl_getNekretnine,
         getNekretninaById: impl_getNekretninaById,
-        getUpiti: impl_getUpiti
+        getUpiti: impl_getUpiti,
+        getKorisnikById: impl_getKorisnikById
     }
 })()

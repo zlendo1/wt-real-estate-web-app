@@ -112,6 +112,30 @@ app.get("/korisnik", (req, res) => {
     )
 })
 
+app.get("/korisnik/:id", (req, res) => {
+    const id = parseInt(req.params.id)
+
+    dao.getKorisnik(id)
+        .then(korisnik => {
+            if (!korisnik) {
+                res.status(400).send(
+                    {greska: `Korisnik sa id-em ${id} ne postoji`}
+                )
+
+                return
+            }
+
+            res.status(200).send(
+                korisnik.toJSON()
+            )
+        })
+        .catch(err => {
+            res.status(500).send(
+                {greska: err.message}
+            )
+        })
+})
+
 app.get("/upiti/:id", (req, res) => {
     const id = parseInt(req.params.id)
 
@@ -154,22 +178,16 @@ app.post("/upit", (req, res) => {
                 return
             }
 
-            const upit = dao.createUpit({
-                tekst_upita: tekstUpita,
-                korisnik_id: req.session.user.id,
-                nekretnina_id: nekretnina_id
-            })
-
-            return upit.save()
-        })
-        .catch(err => {
-            res.status(500).send(
-                {greska: err.message}
-            )
+            return dao.createUpit(req.session.user.id, nekretnina_id, tekstUpita)
         })
         .then(_ => {
             res.status(200).send(
                 {poruka: "Upit je uspješno dodan"}
+            )
+        })
+        .catch(err => {
+            res.status(500).send(
+                {greska: err.message}
             )
         })
 })
