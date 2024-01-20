@@ -24,6 +24,8 @@ function spojiNekretnine(divReferenca, instancaModula, tip_nekretnine, kriterij 
             <img class="centerHorizontal" src="../res/${imageNames[item.tip_nekretnine]}.png" alt="stan">
             <div class="naziv">${item.naziv}</div>
             <div class="kvadratura">${item.kvadratura} m^3</div>
+            <div class="lokacija">${item.lokacija}</div>
+            <div class="godinaIzgradnje">${item.godina_izgradnje}</div>
             <div class="cijena alignRight">${item.cijena} KM</div>
             <div class="statistikaGrid">
                 <div>Broj pretraga:</div>
