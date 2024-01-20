@@ -269,7 +269,7 @@ app.post("/marketing/nekretnina/:id", (req, res) => {
     const id = parseInt(req.params.id)
 
     dao.getMarketingByNekretninaId(id)
-        .then(statistika => {
+        .then(([statistika, _]) => {
             statistika.klikovi += 1
 
             return statistika.save()
