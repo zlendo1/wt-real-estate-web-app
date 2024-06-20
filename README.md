@@ -46,7 +46,7 @@ http://localhost:3000/
 
 Technologies used in the project:
 
-*   Node.js
+*   [Node.js](https://nodejs.org/en)
 *   HTML5
 *   CSS
-*   MySQL
+*   [MySQL](https://www.mysql.com/)
